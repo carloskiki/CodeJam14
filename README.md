@@ -1,6 +1,5 @@
 # CodeJam 14 Project
 
-
 ## Questions
 - What is the auth workflow?
     - Send a link (with session or JWT) to the user's email.
