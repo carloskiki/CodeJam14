@@ -3,3 +3,4 @@
 .idea/
 backend/backend/__pycache__/
 backend/housing/__pycache__/
+backend/housing/cred/
