@@ -32,6 +32,7 @@ const FinishSignup: React.FC = ({ setLoggedIn }) => {
                 // getAdditionalUserInfo(result)?.isNewUser
                 console.log('Successfully signed in with email link!');
                 setLoggedIn(true);
+                navigate('/');
             })
             .catch((error) => {
                 // Some error occurred, you can inspect the code: error.code
