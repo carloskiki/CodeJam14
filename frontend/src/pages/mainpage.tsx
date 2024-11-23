@@ -103,8 +103,16 @@ const mainpage: React.FC = () => {
 
           {/* Map Section */}
           <div className={styles.map}>
-            <h2>Map Representation</h2>
-            <p>Map will load here from the API...</p>
+            <iframe
+              width="400"
+              height="400"
+              style={{"border": 0}}
+              loading="lazy"
+              allowFullScreen
+              referrerPolicy="no-referrer-when-downgrade"
+              src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDcwqtIoz_pE2Ylu2cxAv00XKzVqKonZSo&q=Space+Needle,Seattle+WA"
+                  >
+            </iframe>
           </div>
         </div>
       </main>

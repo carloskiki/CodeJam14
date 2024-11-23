@@ -157,4 +157,5 @@
     border-radius: 8px; /* Rounded corners */
     padding: 20px; /* Inner spacing */
     text-align: center; /* Center-align content */
+    max-height: 440px; /* Limit the height of the map */
   }
