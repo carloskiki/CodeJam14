@@ -2,14 +2,12 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useNavigate } from 'react-router-dom';
 
-interface LoginProps {
-  navigateTo: (view: 'frontpage') => void;
-}
-
-function Login({ navigateTo }: LoginProps) {
+function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,7 +45,7 @@ function Login({ navigateTo }: LoginProps) {
             </div>
             <div className="flex justify-between">
               <Button type="submit">Login</Button>
-              <Button type="button" variant="outline" onClick={() => navigateTo('frontpage')}>
+              <Button type="button" variant="outline" onClick={() => navigate('/frontpage')}>
                 Cancel
               </Button>
             </div>
@@ -59,4 +57,3 @@ function Login({ navigateTo }: LoginProps) {
 }
 
 export default Login;
-
