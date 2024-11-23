@@ -40,8 +40,7 @@ const App: React.FC = () => {
             element={<Frontpage navigateTo={handleNavigate} />} 
           />
         )}
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/finishSignUp" element={<FinishSignup setLoggedin={setLoggedIn} />} />
+        <Route path="/finishSignUp" element={<FinishSignup setLoggedIn={setLoggedIn} />} />
       </Routes>
     </div>
   );
