@@ -1,19 +1,33 @@
 import "./App.css";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Frontpage from "./pages/frontpage";
 import Detailpage from "./pages/detailpage";
 import Profile from "./pages/profile";
 import Mainpage from "./pages/mainpage";
-import Login from "./pages/login";
 import NavBar from "./components/Nav";
 
 const App: React.FC = () => {
-  return (
-    <div>
-      <NavBar />
-      <Frontpage />
-    </div>
-  );
+    const isLoggedIn = true;
+
+    return (
+        <div>
+            <NavBar />
+
+            <Routes>
+                {
+                    isLoggedIn ?
+                        <>
+                            <Route path="/" element={<Mainpage />} />
+                            <Route path="/detail" element={<Detailpage />} />
+                            <Route path="/profile" element={<Profile />} />
+                            <Route path="/frontpage" element={<Frontpage />} />
+                        </>
+                        : <Route path="/" element={<Frontpage />} />
+                }
+
+            </Routes>
+        </div>
+    );
 };
 
 export default App;

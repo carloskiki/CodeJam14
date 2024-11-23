@@ -1,10 +1,5 @@
 import "../App.css";
-import { Routes, Route, Link } from "react-router-dom";
-import Frontpage from "../pages/frontpage";
-import Detailpage from "../pages/detailpage";
-import Profile from "../pages/profile";
-import Mainpage from "../pages/mainpage";
-import Login from "../pages/login";
+import { Link } from "react-router-dom";
 
 const Nav: React.FC = () => {
   return (
@@ -16,24 +11,16 @@ const Nav: React.FC = () => {
             <Link to="/frontpage">Frontpage</Link>
           </li>
           <li>
-            <Link to="/detailpage">Detailpage</Link>
+            <Link to="/detail">Detailpage</Link>
           </li>
           <li>
-            <Link to="/mainpage">Mainpage</Link>
+            <Link to="/">Mainpage</Link>
           </li>
           <li>
             <Link to="/profile">Profile</Link>
           </li>
         </ul>
       </nav>
-
-      {/* Routes */}
-      <Routes>
-        <Route path="/frontpage" element={<Frontpage />} />
-        <Route path="/detailpage" element={<Detailpage />} />
-        <Route path="/mainpage" element={<Mainpage />} />
-        <Route path="/profile" element={<Profile />} />
-      </Routes> 
     </div>
   );
 };
