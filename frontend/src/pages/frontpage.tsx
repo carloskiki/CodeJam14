@@ -5,7 +5,6 @@ import { get, ref } from 'firebase/database';
 import { db } from '../firebase';
 
 interface Apartment {
-  id: number
   title: string
   price: string
   bedrooms: number
@@ -13,8 +12,12 @@ interface Apartment {
   imageUrl: string
 }
 
+interface ApartmentData {
+    [id: number]: Apartment
+}
+
 const mainpage: React.FC = () => {
-  const [apartments, setApartments] = useState<Apartment[] | null>(null);
+  const [apartments, setApartments] = useState<ApartmentData | null>(null);
   const [loading, setLoading] = useState(true);
 
   // Fetch data from Firebase on component mount
@@ -63,8 +66,8 @@ const mainpage: React.FC = () => {
 
       <main className={styles.main}>
         <div className={styles.grid}>
-          {apartments!.map((apartment) => (
-            <div key={apartment.id} className={styles.card}>
+          {Object.entries(apartments!).map(([key, apartment]) => (
+            <div key={key} className={styles.card}>
               <img src={apartment.imageUrl} alt={apartment.title} className={styles.cardImage} />
               <div className={styles.cardContent}>
                 <h2 className={styles.cardTitle}>{apartment.title}</h2>
