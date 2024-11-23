@@ -4,6 +4,7 @@ import Frontpage from "./pages/frontpage";
 import Detailpage from "./pages/detailpage";
 import Profile from "./pages/profile";
 import Mainpage from "./pages/mainpage";
+import Uploadpage from "./pages/uploadpage";
 import NavBar from "./components/Nav";
 
 const App: React.FC = () => {
@@ -21,6 +22,7 @@ const App: React.FC = () => {
                             <Route path="/detail" element={<Detailpage />} />
                             <Route path="/profile" element={<Profile />} />
                             <Route path="/frontpage" element={<Frontpage />} />
+                            <Route path="/upload" element={<Uploadpage />} />
                         </>
                         : <Route path="/" element={<Frontpage />} />
                 }
