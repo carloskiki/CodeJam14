@@ -1,12 +1,17 @@
 .container {
     min-height: 100vh;
     background-color: #f3f4f6;
+    width: 100%;
+    max-width: none; /* Ensure no constraints on width */
+    margin: 0; /* Remove any default margin */
+    padding: 0; /* Remove padding */
   }
   
   .header {
     background-color: #e83030;
-    color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px; /* Reduce padding inside the header */
+    margin: 0; /* Ensure no external spacing */
   }
   
   .headerContent {
@@ -125,16 +130,19 @@
     font-size: 0.875rem;
     color: #6b7280;
   }
-  
+
   .logoContainer {
     display: flex;
     align-items: center; /* Align logo and title vertically */
-    gap: 5px; /* Add spacing between the logo and the title */
+    gap: 10px; /* Add spacing between the logo and the title */
+    margin: 0; /* Removes any default margins */
+    padding: 0; /* Removes any padding */
   }
-  
+
   .logo {
     width: 120px; /* Adjust the logo size */
     height: 120px; /* Maintain proportional height */
+    margin: 0;
   }
 
   .gridContainer {
@@ -158,3 +166,88 @@
     padding: 20px; /* Inner spacing */
     text-align: center; /* Center-align content */
   }
+
+  /* Top Section */
+.topSection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.imageGallery {
+  flex: 2;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.mainInfo {
+  flex: 1;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+
+
+
+/* Details Section */
+.detailsSection {
+  margin-top: 30px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.detailsGrid {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  color: #4b5563;
+}
+
+/* Profile Section */
+.profileSection {
+  margin-top: 20px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.profilePicture {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.contactButton {
+  background: #3b82f6;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.contactButton:hover {
+  background: #2563eb;
+}
+
+/* Section Titles */
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}

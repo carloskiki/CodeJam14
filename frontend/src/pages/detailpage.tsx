@@ -1,79 +1,97 @@
 import React from "react";
-// import { Search, LogIn } from 'lucide-react'
-// import styles from '../components/ApartmentFinder.module.css'
+import styles from "../components/ApartmentFinder.module.css";
 
-// interface Apartment {
-//   id: number
-//   title: string
-//   price: string
-//   bedrooms: number
-//   bathrooms: number
-//   imageUrl: string
-// }
+interface Listing {
+  id: number;
+  title: string;
+  description: string;
+  price: string;
+  bedrooms: number;
+  bathrooms: number;
+  images: string[];
+  poster: {
+    name: string;
+    profilePicture: string;
+    email: string;
+  };
+}
 
-// const apartments: Apartment[] = [
-//   { id: 1, title: "Cozy Studio Near Campus", price: "$800/month", bedrooms: 0, bathrooms: 1, imageUrl: "/placeholder.svg?height=200&width=300" },
-//   { id: 2, title: "Spacious 2BR Apartment", price: "$1200/month", bedrooms: 2, bathrooms: 1, imageUrl: "/placeholder.svg?height=200&width=300" },
-//   { id: 3, title: "Modern 1BR with Balcony", price: "$950/month", bedrooms: 1, bathrooms: 1, imageUrl: "/placeholder.svg?height=200&width=300" },
-//   { id: 4, title: "3BR Family Home", price: "$1500/month", bedrooms: 3, bathrooms: 2, imageUrl: "/placeholder.svg?height=200&width=300" },
-//   { id: 5, title: "Luxury Penthouse Suite", price: "$2000/month", bedrooms: 2, bathrooms: 2, imageUrl: "/placeholder.svg?height=200&width=300" },
-//   { id: 6, title: "Affordable Student Housing", price: "$600/month", bedrooms: 1, bathrooms: 1, imageUrl: "/placeholder.svg?height=200&width=300" },
-// ]
+const listing = {
+  id: 1,
+  title: "Cozy Studio Near Campus",
+  description:
+    "A comfortable studio apartment located just minutes away from McGill University. Perfect for students or young professionals.",
+  price: "$800/month",
+  bedrooms: 0,
+  bathrooms: 1,
+  images: [
+    "/placeholder.svg?height=200&width=300",
+    "/placeholder.svg?height=200&width=300",
+  ],
+  poster: {
+    name: "John Doe",
+    profilePicture: "/placeholder-profile.jpg",
+    email: "johndoe@example.com",
+  },
+};
 
-// const detailpage: React.FC = () => {
-//   return (
-//     <div className={styles.container}>
-//       <header className={styles.header}>
-//         <div className={styles.headerContent}>
-//           <h1 className={styles.title}>McGill Apartment Finder</h1>
-//           <div className={styles.searchContainer}>
-//             <input
-//               type="text"
-//               placeholder="Search apartments..."
-//               className={styles.searchInput}
-//             />
-//             <Search className={styles.searchIcon} size={20} />
-//           </div>
-//           <button className={styles.loginButton}>
-//             <LogIn size={20} />
-//             <span>Login</span>
-//           </button>
-//         </div>
-//       </header>
-
-//       <main className={styles.main}>
-//         <div className={styles.grid}>
-//           {apartments.map((apartment) => (
-//             <div key={apartment.id} className={styles.card}>
-//               <img src={apartment.imageUrl} alt={apartment.title} className={styles.cardImage} />
-//               <div className={styles.cardContent}>
-//                 <h2 className={styles.cardTitle}>{apartment.title}</h2>
-//                 <p className={styles.cardPrice}>{apartment.price}</p>
-//                 <div className={styles.cardDetails}>
-//                   <span>{apartment.bedrooms} {apartment.bedrooms === 1 ? 'Bedroom' : 'Bedrooms'}</span>
-//                   <span>{apartment.bathrooms} {apartment.bathrooms === 1 ? 'Bathroom' : 'Bathrooms'}</span>
-//                 </div>
-//               </div>
-//             </div>
-//           ))}
-//         </div>
-//       </main>
-//     </div>
-//   )
-// }
-
-// export default detailpage
-
-import { Link } from "react-router-dom";
-
-const detailpage: React.FC = () => {
+const DetailPage: React.FC = () => {
   return (
-    <div>
-      <h1>Detail Page</h1>
-      <p>This is the detail page.</p>
-      <Link to="/frontpage">Go Back to Frontpage</Link>
+    <div className={styles.container}>
+      {/* Top Section */}
+      <div className={styles.topSection}>
+        <div className={styles.imageGallery}>
+          {listing.images.map((image, index) => (
+            <img
+              key={index}
+              src={image}
+              alt={`Listing Image ${index + 1}`}
+              className={styles.cardImage} // Reusing styles
+            />
+          ))}
+        </div>
+        <div className={styles.mainInfo}>
+          <h1 className={styles.title}>{listing.title}</h1>
+          <p className={styles.cardPrice}>{listing.price}</p>
+          <p className={styles.description}>{listing.description}</p>
+        </div>
+      </div>
+
+      {/* More Details */}
+      <div className={styles.detailsSection}>
+        <h2 className={styles.sectionTitle}>More Details</h2>
+        <div className={styles.detailsGrid}>
+          <p>
+            <strong>Bedrooms:</strong> {listing.bedrooms}
+          </p>
+          <p>
+            <strong>Bathrooms:</strong> {listing.bathrooms}
+          </p>
+        </div>
+      </div>
+
+      {/* Poster Info */}
+      <div className={styles.profileSection}>
+        <h2 className={styles.sectionTitle}>Posted By</h2>
+        <div className={styles.profile}>
+          <img
+            src={listing.poster.profilePicture}
+            alt="Poster Profile"
+            className={styles.profilePicture}
+          />
+          <div className={styles.profileDetails}>
+            <p className={styles.posterName}>{listing.poster.name}</p>
+            <a
+              href={`mailto:${listing.poster.email}`}
+              className={styles.contactButton}
+            >
+              Contact Poster
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default detailpage;
+export default DetailPage;
