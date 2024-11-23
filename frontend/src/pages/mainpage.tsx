@@ -83,7 +83,7 @@ const mainpage: React.FC = () => {
           </div>
           <button className={styles.loginButton}>
             <LogIn size={20} />
-            <span>Login</span>
+            <span>Profile</span>
           </button>
         </div>
       </header>
