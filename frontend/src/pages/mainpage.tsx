@@ -11,7 +11,6 @@ interface Apartment {
   imageUrl: string;
 }
 
-//Hardcoded apartments (will need to obtain data from database later)
 const apartments: Apartment[] = [
   {
     id: 1,

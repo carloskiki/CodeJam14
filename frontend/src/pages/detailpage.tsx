@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 // import { Search, LogIn } from 'lucide-react'
 // import styles from '../components/ApartmentFinder.module.css'
 
@@ -64,8 +64,7 @@ import React from 'react'
 
 // export default detailpage
 
-
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const detailpage: React.FC = () => {
   return (

@@ -12,15 +12,19 @@
   .headerContent {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 1rem;
+    padding-left: 30px;
+    padding-right: 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
   
   .title {
-    font-size: 1.5rem;
-    font-weight: bold;
+    font-size: 64px; /* Increase font size significantly */
+    font-weight: bold; /* Make the text bold for emphasis */
+    position: relative; /* Allow positioning adjustments */
+    left: -40px; /* Move closer to the left */
+    top: 20px; /* Move it down */
   }
   
   .searchContainer {
