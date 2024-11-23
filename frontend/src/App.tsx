@@ -4,6 +4,7 @@ import Frontpage from "./pages/frontpage";
 import Detailpage from "./pages/detailpage";
 import Profile from "./pages/profile";
 import Mainpage from "./pages/mainpage";
+import Uploadpage from "./pages/uploadpage";
 import NavBar from "./components/Nav";
 import Login from './pages/login';
 
