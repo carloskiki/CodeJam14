@@ -2,54 +2,93 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useNavigate } from 'react-router-dom';
+import { sendSignInLinkToEmail } from "firebase/auth";
+import { auth } from '@/firebase';
 
-interface LoginProps {
-  navigateTo: (view: 'frontpage') => void;
+const actionCodeSettings = {
+  // URL you want to redirect back to. The domain (www.example.com) for this
+  // URL must be in the authorized domains list in the Firebase Console.
+  url: 'http://localhost:5173/finishSignUp',
+  // This must be true.
+  handleCodeInApp: true,
+};
+
+enum LoginStatus {
+  Error = 'Error',
+  Sent = 'Sent',
 }
 
-function Login({ navigateTo }: LoginProps) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+function Login() {
+  const [email, setEmail] = useState('');
+  const [state, setState] = useState<LoginStatus | null>(null);
+  const navigate = useNavigate();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Add login logic here
-    console.log('Login attempted with:', { username, password });
+
+    const regex = /^[a-zA-Z0-9._%+-]+@mail\.mcgill\.ca$/;
+    if (!regex.test(email)) {
+      alert('Please enter a valid McGill email address.');
+      return;
+    }
+    
+    sendSignInLinkToEmail(auth, email, actionCodeSettings)
+      .then(() => {
+        // The link was successfully sent. Inform the user.
+        // Save the email locally so you don't need to ask the user for it again
+        // if they open the link on the same device.
+        window.localStorage.setItem('emailForSignIn', email);
+        setState(LoginStatus.Sent);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+
+        setState(LoginStatus.Error);
+        console.error(errorCode, errorMessage);
+      });
+  };
+
+  const renderStatusMessage = (status: LoginStatus | null) => {
+    switch (status) {
+      case LoginStatus.Sent:
+        return <p className="text-green-500">An email has been sent! Check your inbox to continue.</p>;
+      case LoginStatus.Error:
+        return <p className="text-red-500">There was an error processing your login. Please try again.</p>;
+      default:
+        return null;
+    }
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <Card className="w-[350px]">
+      <Card className="w-[400px]">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Login</CardTitle>
+          <p className="text-sm text-gray-500">Enter your McGill email, and we'll take it from there.</p>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
-              <label htmlFor="username" className="text-sm font-medium">Username</label>
+              <label htmlFor="email" className="text-sm font-medium">Email</label>
               <Input
-                id="username"
+                id="email"
                 type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
-            <div className="space-y-2">
-              <label htmlFor="password" className="text-sm font-medium">Password</label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
+
+            {/* Conditionally render error message */}
+            {renderStatusMessage(state)}
+            
             <div className="flex justify-between">
-              <Button type="submit">Login</Button>
-              <Button type="button" variant="outline" onClick={() => navigateTo('frontpage')}>
+              <Button type="button" variant="outline" onClick={() => navigate('/frontpage')}>
                 Cancel
               </Button>
+              <Button type="submit">Login</Button>
             </div>
           </form>
         </CardContent>
@@ -59,4 +98,3 @@ function Login({ navigateTo }: LoginProps) {
 }
 
 export default Login;
-

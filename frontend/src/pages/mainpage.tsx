@@ -46,7 +46,6 @@ const mainpage: React.FC = () => {
    if (loading) {
      return <div>Loading...</div>;
    }
- 
     
   return (
     <div className={styles.container}>
