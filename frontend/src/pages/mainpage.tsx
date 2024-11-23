@@ -89,30 +89,39 @@ const mainpage: React.FC = () => {
       </header>
 
       <main className={styles.main}>
-        <div className={styles.grid}>
-          {apartments.map((apartment) => (
-            <div key={apartment.id} className={styles.card}>
-              <img
-                src={apartment.imageUrl}
-                alt={apartment.title}
-                className={styles.cardImage}
-              />
-              <div className={styles.cardContent}>
-                <h2 className={styles.cardTitle}>{apartment.title}</h2>
-                <p className={styles.cardPrice}>{apartment.price}</p>
-                <div className={styles.cardDetails}>
-                  <span>
-                    {apartment.bedrooms}{" "}
-                    {apartment.bedrooms === 1 ? "Bedroom" : "Bedrooms"}
-                  </span>
-                  <span>
-                    {apartment.bathrooms}{" "}
-                    {apartment.bathrooms === 1 ? "Bathroom" : "Bathrooms"}
-                  </span>
+        <div className={styles.gridContainer}>
+          {/* Apartments Grid */}
+          <div className={styles.apartmentGrid}>
+            {apartments.map((apartment) => (
+              <div key={apartment.id} className={styles.card}>
+                <img
+                  src={apartment.imageUrl}
+                  alt={apartment.title}
+                  className={styles.cardImage}
+                />
+                <div className={styles.cardContent}>
+                  <h2 className={styles.cardTitle}>{apartment.title}</h2>
+                  <p className={styles.cardPrice}>{apartment.price}</p>
+                  <div className={styles.cardDetails}>
+                    <span>
+                      {apartment.bedrooms}{" "}
+                      {apartment.bedrooms === 1 ? "Bedroom" : "Bedrooms"}
+                    </span>
+                    <span>
+                      {apartment.bathrooms}{" "}
+                      {apartment.bathrooms === 1 ? "Bathroom" : "Bathrooms"}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          {/* Map Section */}
+          <div className={styles.map}>
+            <h2>Map Representation</h2>
+            <p>Map will load here from the API...</p>
+          </div>
         </div>
       </main>
     </div>
