@@ -57,7 +57,7 @@ const mainpage: React.FC = () => {
             />
             <Search className={styles.searchIcon} size={20} />
           </div>
-          <button className={styles.loginButton}>
+          <button className={styles.loginButton} onClick={() => window.location.href = '/login'}>
             <LogIn size={20} />
             <span>Login</span>
           </button>
