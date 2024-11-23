@@ -1,1 +1,5 @@
-/venv/
+.venv/
+.DS_Store
+.idea/
+backend/backend/__pycache__/
+backend/housing/__pycache__/
