@@ -9,6 +9,7 @@ import Login from './pages/login';
 import Signup from './pages/signup';
 import FinishSignup from "./pages/finish-signup";
 import { useState } from "react";
+import Uploadpage from "./pages/uploadpage";
 
 const App: React.FC = () => {
   const [loggedIn, setLoggedIn] = useState(true);
