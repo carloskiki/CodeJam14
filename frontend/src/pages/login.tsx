@@ -21,7 +21,7 @@ export default function Login() {
             <h2 className="text-2xl font-bold mb-4">Log In</h2>
             <div className="mb-4">
               <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
-                Username:
+                Username: 
               </label>
               <input
                 type="text"
@@ -31,7 +31,7 @@ export default function Login() {
             </div>
             <div className="mb-6">
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Password:
+                Password: 
               </label>
               <input
                 type="password"
