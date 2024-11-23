@@ -1,6 +1,9 @@
 import React from "react";
 import { Search, LogIn } from "lucide-react";
+import { useState, useEffect } from "react";
 import styles from "../components/ApartmentFinder.module.css";
+import { get, ref } from "firebase/database";
+import { db } from "@/firebase";
 
 interface Apartment {
   id: number;
@@ -11,58 +14,39 @@ interface Apartment {
   imageUrl: string;
 }
 
-const apartments: Apartment[] = [
-  {
-    id: 1,
-    title: "Cozy Studio Near Campus",
-    price: "$800/month",
-    bedrooms: 0,
-    bathrooms: 1,
-    imageUrl: "/placeholder.svg?height=200&width=300",
-  },
-  {
-    id: 2,
-    title: "Spacious 2BR Apartment",
-    price: "$1200/month",
-    bedrooms: 2,
-    bathrooms: 1,
-    imageUrl: "/placeholder.svg?height=200&width=300",
-  },
-  {
-    id: 3,
-    title: "Modern 1BR with Balcony",
-    price: "$950/month",
-    bedrooms: 1,
-    bathrooms: 1,
-    imageUrl: "/placeholder.svg?height=200&width=300",
-  },
-  {
-    id: 4,
-    title: "3BR Family Home",
-    price: "$1500/month",
-    bedrooms: 3,
-    bathrooms: 2,
-    imageUrl: "/placeholder.svg?height=200&width=300",
-  },
-  {
-    id: 5,
-    title: "Luxury Penthouse Suite",
-    price: "$2000/month",
-    bedrooms: 2,
-    bathrooms: 2,
-    imageUrl: "/placeholder.svg?height=200&width=300",
-  },
-  {
-    id: 6,
-    title: "Affordable Student Housing",
-    price: "$600/month",
-    bedrooms: 1,
-    bathrooms: 1,
-    imageUrl: "/placeholder.svg?height=200&width=300",
-  },
-];
+interface ApartmentData {
+    [id: number]: Apartment
+}
 
 const mainpage: React.FC = () => {
+   const [apartments, setApartments] = useState<ApartmentData | null>(null);
+   const [loading, setLoading] = useState(true);
+ 
+   // Fetch data from Firebase on component mount
+   useEffect(() => {
+     const fetchData = async () => {
+       try {
+         const snapshot = await get(ref(db, 'Listings/')); // Adjust path as necessary
+         if (snapshot.exists()) {
+           setApartments(snapshot.val());  // Set the data into state
+         } else {
+           console.log('No data available');
+         }
+       } catch (error) {
+         console.error('Error fetching data:', error);
+       } finally {
+         setLoading(false);  // Set loading to false after fetching
+       }
+     };
+ 
+     fetchData();  // Call fetch function on component load
+   }, []); // Empty array means it only runs on mount (componentDidMount)
+ 
+   if (loading) {
+     return <div>Loading...</div>;
+   }
+ 
+    
   return (
     <div className={styles.container}>
       <header className={styles.header}>
@@ -92,8 +76,8 @@ const mainpage: React.FC = () => {
         <div className={styles.gridContainer}>
           {/* Apartments Grid */}
           <div className={styles.apartmentGrid}>
-            {apartments.map((apartment) => (
-              <div key={apartment.id} className={styles.card}>
+            {Object.entries(apartments!).map(([id, apartment]) => (
+              <div key={id} className={styles.card}>
                 <img
                   src={apartment.imageUrl}
                   alt={apartment.title}
@@ -129,3 +113,47 @@ const mainpage: React.FC = () => {
 };
 
 export default mainpage;
+
+
+
+// 
+//   return (
+//     <div className={styles.container}>
+//       <header className={styles.header}>
+//         <div className={styles.headerContent}>
+//           <h1 className={styles.title}>McGill Apartment Finder</h1>
+//           <div className={styles.searchContainer}>
+//             <input
+//               type="text"
+//               placeholder="Search apartments..."
+//               className={styles.searchInput}
+//             />
+//             <Search className={styles.searchIcon} size={20} />
+//           </div>
+//           <button className={styles.loginButton}>
+//             <LogIn size={20} />
+//             <span>Login</span>
+//           </button>
+//         </div>
+//       </header>
+// 
+//       <main className={styles.main}>
+//         <div className={styles.grid}>
+//           {Object.entries(apartments!).map(([key, apartment]) => (
+//             <div key={key} className={styles.card}>
+//               <img src={apartment.imageUrl} alt={apartment.title} className={styles.cardImage} />
+//               <div className={styles.cardContent}>
+//                 <h2 className={styles.cardTitle}>{apartment.title}</h2>
+//                 <p className={styles.cardPrice}>{apartment.price}</p>
+//                 <div className={styles.cardDetails}>
+//                   <span>{apartment.bedrooms} {apartment.bedrooms === 1 ? 'Bedroom' : 'Bedrooms'}</span>
+//                   <span>{apartment.bathrooms} {apartment.bathrooms === 1 ? 'Bathroom' : 'Bathrooms'}</span>
+//                 </div>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+//       </main>
+//     </div>
+//   )
+// }
