@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Search, LogIn } from 'lucide-react'
 import styles from '../components/ApartmentFinder.module.css'
 import { get, ref } from 'firebase/database';
-import { db } from '../firebase';
+import { db, storage } from '../firebase';
+import { ref as storageRef, getDownloadURL } from 'firebase/storage';
 
 interface Apartment {
   title: string
@@ -39,6 +40,20 @@ const mainpage: React.FC = () => {
 
     fetchData();  // Call fetch function on component load
   }, []); // Empty array means it only runs on mount (componentDidMount)
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const imageRef = storageRef(storage, 'apt1.webp'); // Specify your image path
+        const url = await getDownloadURL(imageRef);
+        console.log('Image URL:', url);
+      } catch (error) {
+        console.error("Error fetching image:", error);
+      }
+    };
+
+    fetchImages();
+  }, []);
 
   if (loading) {
     return <div>Loading...</div>;
