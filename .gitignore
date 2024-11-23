@@ -1,6 +1,6 @@
 .venv/
 .DS_Store
 .idea/
-backend/backend/__pycache__/
-backend/housing/__pycache__/
+backend/backend/__pycache__
+backend/housing/__pycache__
 backend/housing/cred/

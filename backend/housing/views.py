@@ -4,9 +4,9 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 
-cred = credentials.Certificate('')
+cred = credentials.Certificate('housing/cred/housing-project-ac453-firebase-adminsdk-p6nz1-a0d5332473.json')
 firebase_admin.initialize_app(cred, {
-    "databaseURL": "",
+    "databaseURL": "https://housing-project-ac453-default-rtdb.firebaseio.com/",
 })
 
 def index(request):
@@ -23,7 +23,12 @@ def index(request):
             return HttpResponse("Please provide both name and email.")
     elif request.method == 'GET' and 'name' in request.GET:
         name = request.GET.get('name')
-        data_ref = db.reference(f'Data/{name}')
+        
+        try:
+            data_ref = db.reference(f'Data/{name}')
+        except ValueError:
+            return HttpResponse("Database error, name invalid")
+        
         data = data_ref.get()
         if data:
             email = data.get('email', "Email not found")
