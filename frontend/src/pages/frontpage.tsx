@@ -14,7 +14,7 @@ interface Apartment {
 }
 
 const mainpage: React.FC = () => {
-  const [apartments, setApartments] = useState(null);
+  const [apartments, setApartments] = useState<Apartment[] | null>(null);
   const [loading, setLoading] = useState(true);
 
   // Fetch data from Firebase on component mount
@@ -63,7 +63,7 @@ const mainpage: React.FC = () => {
 
       <main className={styles.main}>
         <div className={styles.grid}>
-          {apartments.map((apartment) => (
+          {apartments!.map((apartment) => (
             <div key={apartment.id} className={styles.card}>
               <img src={apartment.imageUrl} alt={apartment.title} className={styles.cardImage} />
               <div className={styles.cardContent}>
@@ -82,4 +82,4 @@ const mainpage: React.FC = () => {
   )
 }
 
-export default mainpage
+export default mainpage;
