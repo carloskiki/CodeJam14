@@ -3,6 +3,9 @@ import { Link, useParams } from "react-router-dom";
 import styles from "../components/ApartmentFinder.module.css";
 import { ref, get } from "firebase/database";
 import { db } from "../firebase";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { ChevronLeft, ChevronRight, Home, BedDouble, Bath, Calendar, Clock } from "lucide-react";
 
 interface ApartmentDetails {
   id: number;
@@ -41,7 +44,11 @@ const DetailPage: React.FC = () => {
   }, [id]);
 
   if (!apartment) {
-    return <div>Loading apartment details...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-xl">Loading apartment details...</p>
+      </div>
+    );
   }
 
   const nextImage = () => {
@@ -53,21 +60,97 @@ const DetailPage: React.FC = () => {
   };
 
   return (
-    <div className={styles.detailContainer}>
-      <h1>{apartment.title}</h1>
-      <div className={styles.imageCarousel}>
-        <button onClick={prevImage}>Previous</button>
-        <img src={apartment.imageUrls[currentImageIndex]} alt={apartment.title} />
-        <button onClick={nextImage}>Next</button>
-      </div>
-      <div className={styles.infoBox}>
-        <p>Price: {apartment.price}</p>
-        <p>Bedrooms: {apartment.bedrooms}</p>
-        <p>Bathrooms: {apartment.bathrooms}</p>
-        <p>Lease Start: {new Date(apartment.leaseStart).toLocaleDateString()}</p>
-        <p>Contract Duration: {apartment.contractDuration} months</p>
-      </div>
-      <Link to="/frontpage">Go Back to Frontpage</Link>
+    <div className="container mx-auto px-4 py-8 max-w-6xl">
+      <Card className="p-6">
+        {/* Navigation */}
+        <div className="mb-6">
+          <Link to="/" className="text-blue-600 hover:text-blue-800 flex items-center gap-2">
+            <Home size={20} />
+            <span>Back to Listings</span>
+          </Link>
+        </div>
+
+        {/* Title and Price */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold mb-4">{apartment.title}</h1>
+          <p className="text-2xl font-semibold text-blue-600">${apartment.price}/month</p>
+        </div>
+
+        {/* Image Carousel */}
+        <div className="relative mb-8 rounded-lg overflow-hidden bg-gray-100 aspect-video">
+          <img 
+            src={apartment.imageUrls[currentImageIndex]} 
+            alt={`${apartment.title} - Image ${currentImageIndex + 1}`}
+            className="w-full h-full object-cover"
+          />
+          <button 
+            onClick={prevImage}
+            className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full hover:bg-white"
+          >
+            <ChevronLeft size={24} />
+          </button>
+          <button 
+            onClick={nextImage}
+            className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full hover:bg-white"
+          >
+            <ChevronRight size={24} />
+          </button>
+          <div className="absolute bottom-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
+            {currentImageIndex + 1} / {apartment.imageUrls.length}
+          </div>
+        </div>
+
+        {/* Property Details Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          {/* Key Features */}
+          <Card className="p-6 space-y-4">
+            <h2 className="text-xl font-semibold mb-4">Property Features</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex items-center gap-2">
+                <BedDouble className="text-gray-600" size={20} />
+                <div>
+                  <p className="text-sm text-gray-600">Bedrooms</p>
+                  <p className="font-semibold">{apartment.bedrooms}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Bath className="text-gray-600" size={20} />
+                <div>
+                  <p className="text-sm text-gray-600">Bathrooms</p>
+                  <p className="font-semibold">{apartment.bathrooms}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Calendar className="text-gray-600" size={20} />
+                <div>
+                  <p className="text-sm text-gray-600">Lease Start</p>
+                  <p className="font-semibold">{new Date(apartment.leaseStart).toLocaleDateString()}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock className="text-gray-600" size={20} />
+                <div>
+                  <p className="text-sm text-gray-600">Contract Duration</p>
+                  <p className="font-semibold">{apartment.contractDuration} months</p>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          {/* Description */}
+          <Card className="p-6">
+            <h2 className="text-xl font-semibold mb-4">Description</h2>
+            <p className="text-gray-700 whitespace-pre-wrap">{apartment.description}</p>
+          </Card>
+        </div>
+
+        {/* Contact Button */}
+        <div className="text-center">
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2 rounded-lg text-lg">
+            Schedule a visit
+          </Button>
+        </div>
+      </Card>
     </div>
   );
 };

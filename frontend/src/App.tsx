@@ -28,6 +28,7 @@ const App: React.FC = () => {
             <Route path="/" element={<Mainpage />} />
             <Route path="/detail/:id" element={<Detailpage />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/upload" element={<Uploadpage />} />
             <Route 
               path="/frontpage" 
               element={<Frontpage navigateTo={handleNavigate} />} 

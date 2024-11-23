@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
+import { Card } from "@/components/ui/card"
 
 const Uploadpage: React.FC = () => {
   const navigate = useNavigate()
@@ -104,60 +105,155 @@ const Uploadpage: React.FC = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <Label htmlFor="title">Title</Label>
-        <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} required />
-      </div>
-      <div>
-        <Label htmlFor="description">Description</Label>
-        <Textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} required />
-      </div>
-      <div>
-        <Label htmlFor="price">Price</Label>
-        <Input id="price" type="number" value={price} onChange={(e) => setPrice(e.target.value)} required />
-      </div>
-      <div>
-        <Label htmlFor="bedrooms">Bedrooms</Label>
-        <Input id="bedrooms" type="number" value={bedrooms} onChange={(e) => setBedrooms(e.target.value)} required />
-      </div>
-      <div>
-        <Label htmlFor="bathrooms">Bathrooms</Label>
-        <Input id="bathrooms" type="number" value={bathrooms} onChange={(e) => setBathrooms(e.target.value)} required />
-      </div>
-      <div>
-        <Label htmlFor="leaseStart">Lease Start Date</Label>
-        <Input 
-          id="leaseStart" 
-          type="date" 
-          value={leaseStart} 
-          onChange={(e) => setLeaseStart(e.target.value)} 
-          required 
-        />
-      </div>
-      <div>
-        <Label htmlFor="contractDuration">Contract Duration (months)</Label>
-        <Input 
-          id="contractDuration" 
-          type="number" 
-          min="1"
-          value={contractDuration} 
-          onChange={(e) => setContractDuration(e.target.value)} 
-          required 
-        />
-      </div>
-      <div>
-        <Label htmlFor="thumbnail">Thumbnail Image</Label>
-        <Input id="thumbnail" type="file" onChange={handleThumbnailChange} accept="image/*" required />
-      </div>
-      <div>
-        <Label htmlFor="images">Images</Label>
-        <Input id="images" type="file" onChange={handleImageChange} accept="image/*" multiple required />
-      </div>
-      <Button type="submit" disabled={isUploading}>
-        {isUploading ? 'Uploading...' : 'Submit Listing'}
-      </Button>
-    </form>
+    <div className="container mx-auto px-4 py-8 max-w-3xl">
+      <Card className="p-6">
+        <h1 className="text-2xl font-bold mb-6 text-center">List Your Property</h1>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Basic Information */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-gray-700">Basic Information</h2>
+            <div>
+              <Label htmlFor="title" className="text-sm font-medium">Property Title</Label>
+              <Input 
+                id="title" 
+                placeholder="Enter property title"
+                value={title} 
+                onChange={(e) => setTitle(e.target.value)} 
+                className="mt-1"
+                required 
+              />
+            </div>
+            <div>
+              <Label htmlFor="description" className="text-sm font-medium">Description</Label>
+              <Textarea 
+                id="description" 
+                placeholder="Describe your property"
+                value={description} 
+                onChange={(e) => setDescription(e.target.value)} 
+                className="mt-1 h-32"
+                required 
+              />
+            </div>
+          </div>
+
+          {/* Property Details */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-gray-700">Property Details</h2>
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <Label htmlFor="price" className="text-sm font-medium">Monthly Rent ($)</Label>
+                <Input 
+                  id="price" 
+                  type="number" 
+                  placeholder="Enter monthly rent"
+                  value={price} 
+                  onChange={(e) => setPrice(e.target.value)} 
+                  className="mt-1"
+                  required 
+                />
+              </div>
+              <div>
+                <Label htmlFor="bedrooms" className="text-sm font-medium">Bedrooms</Label>
+                <Input 
+                  id="bedrooms" 
+                  type="number" 
+                  placeholder="Number of bedrooms"
+                  value={bedrooms} 
+                  onChange={(e) => setBedrooms(e.target.value)} 
+                  className="mt-1"
+                  required 
+                />
+              </div>
+              <div>
+                <Label htmlFor="bathrooms" className="text-sm font-medium">Bathrooms</Label>
+                <Input 
+                  id="bathrooms" 
+                  type="number" 
+                  placeholder="Number of bathrooms"
+                  value={bathrooms} 
+                  onChange={(e) => setBathrooms(e.target.value)} 
+                  className="mt-1"
+                  required 
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Lease Details */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-gray-700">Lease Details</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="leaseStart" className="text-sm font-medium">Lease Start Date</Label>
+                <Input 
+                  id="leaseStart" 
+                  type="date" 
+                  value={leaseStart} 
+                  onChange={(e) => setLeaseStart(e.target.value)} 
+                  className="mt-1"
+                  required 
+                />
+              </div>
+              <div>
+                <Label htmlFor="contractDuration" className="text-sm font-medium">Contract Duration (months)</Label>
+                <Input 
+                  id="contractDuration" 
+                  type="number" 
+                  min="1"
+                  placeholder="Duration in months"
+                  value={contractDuration} 
+                  onChange={(e) => setContractDuration(e.target.value)} 
+                  className="mt-1"
+                  required 
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Images */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-gray-700">Property Images</h2>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="thumbnail" className="text-sm font-medium">Featured Image</Label>
+                <Input 
+                  id="thumbnail" 
+                  type="file" 
+                  onChange={handleThumbnailChange} 
+                  accept="image/*" 
+                  className="mt-1"
+                  required 
+                />
+                <p className="text-sm text-gray-500 mt-1">This will be the main image shown in listings</p>
+              </div>
+              <div>
+                <Label htmlFor="images" className="text-sm font-medium">Additional Images</Label>
+                <Input 
+                  id="images" 
+                  type="file" 
+                  onChange={handleImageChange} 
+                  accept="image/*" 
+                  multiple 
+                  className="mt-1"
+                  required 
+                />
+                <p className="text-sm text-gray-500 mt-1">You can select up to 10 additional images</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-4">
+            <Button 
+              type="submit" 
+              disabled={isUploading}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition-colors"
+            >
+              {isUploading ? 'Uploading...' : 'List Property'}
+            </Button>
+          </div>
+        </form>
+      </Card>
+    </div>
   )
 }
 
