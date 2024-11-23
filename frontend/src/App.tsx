@@ -7,9 +7,11 @@ import Mainpage from "./pages/mainpage";
 import NavBar from "./components/Nav";
 import Login from './pages/login';
 import Signup from './pages/signup';
+import FinishSignup from "./pages/finish-signup";
+import { useState } from "react";
 
 const App: React.FC = () => {
-  const isLoggedIn = true;
+  const [loggedIn, setLoggedIn] = useState(true);
   const navigate = useNavigate();
 
   // Implement the navigation function
@@ -21,7 +23,7 @@ const App: React.FC = () => {
     <div>
       <NavBar />
       <Routes>
-        {isLoggedIn ? (
+        {loggedIn ? (
           <>
             <Route path="/" element={<Mainpage />} />
             <Route path="/detail" element={<Detailpage />} />
@@ -31,7 +33,6 @@ const App: React.FC = () => {
               element={<Frontpage navigateTo={handleNavigate} />} 
             />
             <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
           </>
         ) : (
           <Route 
@@ -39,6 +40,8 @@ const App: React.FC = () => {
             element={<Frontpage navigateTo={handleNavigate} />} 
           />
         )}
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/finishSignUp" element={<FinishSignup setLoggedin={setLoggedIn} />} />
       </Routes>
     </div>
   );

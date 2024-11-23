@@ -3,15 +3,62 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
+import { sendSignInLinkToEmail } from "firebase/auth";
+import { auth } from '@/firebase';
+
+const actionCodeSettings = {
+  // URL you want to redirect back to. The domain (www.example.com) for this
+  // URL must be in the authorized domains list in the Firebase Console.
+  url: 'http://localhost:5173/finishSignUp',
+  // This must be true.
+  handleCodeInApp: true,
+};
+
+enum LoginStatus {
+  Error = 'Error',
+  Sent = 'Sent',
+}
 
 function Login() {
   const [email, setEmail] = useState('');
+  const [state, setState] = useState<LoginStatus | null>(null);
   const navigate = useNavigate();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Add login logic here
-    console.log('Login attempted with:', { email });
+
+    const regex = /^[a-zA-Z0-9._%+-]+@mail\.mcgill\.ca$/;
+    if (!regex.test(email)) {
+      alert('Please enter a valid McGill email address.');
+      return;
+    }
+    
+    sendSignInLinkToEmail(auth, email, actionCodeSettings)
+      .then(() => {
+        // The link was successfully sent. Inform the user.
+        // Save the email locally so you don't need to ask the user for it again
+        // if they open the link on the same device.
+        window.localStorage.setItem('emailForSignIn', email);
+        setState(LoginStatus.Sent);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+
+        setState(LoginStatus.Error);
+        console.error(errorCode, errorMessage);
+      });
+  };
+
+  const renderStatusMessage = (status: LoginStatus | null) => {
+    switch (status) {
+      case LoginStatus.Sent:
+        return <p className="text-green-500">An email has been sent! Check your inbox to continue.</p>;
+      case LoginStatus.Error:
+        return <p className="text-red-500">There was an error processing your login. Please try again.</p>;
+      default:
+        return null;
+    }
   };
 
   return (
@@ -33,11 +80,15 @@ function Login() {
                 required
               />
             </div>
+
+            {/* Conditionally render error message */}
+            {renderStatusMessage(state)}
+            
             <div className="flex justify-between">
-              <Button type="submit">Login</Button>
               <Button type="button" variant="outline" onClick={() => navigate('/frontpage')}>
                 Cancel
               </Button>
+              <Button type="submit">Login</Button>
             </div>
           </form>
         </CardContent>
