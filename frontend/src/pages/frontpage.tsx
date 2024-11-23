@@ -14,7 +14,7 @@ const frontpage: React.FC = () => {
       <Login />
       <Signup />
     </div>
-  )
-}
+  );
+};
 
 export default frontpage;

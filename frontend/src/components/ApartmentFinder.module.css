@@ -1,12 +1,17 @@
 .container {
     min-height: 100vh;
     background-color: #f3f4f6;
+    width: 100%;
+    max-width: none; /* Ensure no constraints on width */
+    margin: 0; /* Remove any default margin */
+    padding: 0; /* Remove padding */
   }
   
   .header {
     background-color: #e83030;
-    color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px; /* Reduce padding inside the header */
+    margin: 0; /* Ensure no external spacing */
   }
   
   .headerContent {
@@ -125,16 +130,19 @@
     font-size: 0.875rem;
     color: #6b7280;
   }
-  
+
   .logoContainer {
     display: flex;
     align-items: center; /* Align logo and title vertically */
-    gap: 5px; /* Add spacing between the logo and the title */
+    gap: 10px; /* Add spacing between the logo and the title */
+    margin: 0; /* Removes any default margins */
+    padding: 0; /* Removes any padding */
   }
-  
+
   .logo {
     width: 120px; /* Adjust the logo size */
     height: 120px; /* Maintain proportional height */
+    margin: 0;
   }
 
   .gridContainer {
