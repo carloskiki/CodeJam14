@@ -1,95 +1,73 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import styles from "../components/ApartmentFinder.module.css";
+import { ref, get } from "firebase/database";
+import { db } from "../firebase";
 
-interface Listing {
+interface ApartmentDetails {
   id: number;
   title: string;
   description: string;
   price: string;
   bedrooms: number;
   bathrooms: number;
-  images: string[];
-  poster: {
-    name: string;
-    profilePicture: string;
-    email: string;
-  };
+  imageUrl: string;
+  imageUrls: string[];
+  leaseStart: string;
+  contractDuration: number;
 }
 
-const listing = {
-  id: 1,
-  title: "Cozy Studio Near Campus",
-  description:
-    "A comfortable studio apartment located just minutes away from McGill University. Perfect for students or young professionals.",
-  price: "$800/month",
-  bedrooms: 0,
-  bathrooms: 1,
-  images: [
-    "/placeholder.svg?height=200&width=300",
-    "/placeholder.svg?height=200&width=300",
-  ],
-  poster: {
-    name: "John Doe",
-    profilePicture: "/placeholder-profile.jpg",
-    email: "johndoe@example.com",
-  },
-};
-
 const DetailPage: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const [apartment, setApartment] = useState<ApartmentDetails | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const fetchApartmentDetails = async () => {
+      try {
+        const apartmentRef = ref(db, `Listings/${id}`);
+        const snapshot = await get(apartmentRef);
+        if (snapshot.exists()) {
+          setApartment(snapshot.val());
+        } else {
+          console.error("No data available");
+        }
+      } catch (error) {
+        console.error("Error fetching apartment details:", error);
+      }
+    };
+
+    fetchApartmentDetails();
+  }, [id]);
+
+  if (!apartment) {
+    return <div>Loading apartment details...</div>;
+  }
+
+  const nextImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % apartment.imageUrls.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + apartment.imageUrls.length) % apartment.imageUrls.length);
+  };
+
   return (
-    <div className={styles.container}>
-      {/* Top Section */}
-      <div className={styles.topSection}>
-        <div className={styles.imageGallery}>
-          {listing.images.map((image, index) => (
-            <img
-              key={index}
-              src={image}
-              alt={`Listing Image ${index + 1}`}
-              className={styles.cardImage} // Reusing styles
-            />
-          ))}
-        </div>
-        <div className={styles.mainInfo}>
-          <h1 className={styles.title}>{listing.title}</h1>
-          <p className={styles.cardPrice}>{listing.price}</p>
-          <p className={styles.description}>{listing.description}</p>
-        </div>
+    <div className={styles.detailContainer}>
+      <h1>{apartment.title}</h1>
+      <div className={styles.imageCarousel}>
+        <button onClick={prevImage}>Previous</button>
+        <img src={apartment.imageUrls[currentImageIndex]} alt={apartment.title} />
+        <button onClick={nextImage}>Next</button>
       </div>
-
-      {/* More Details */}
-      <div className={styles.detailsSection}>
-        <h2 className={styles.sectionTitle}>More Details</h2>
-        <div className={styles.detailsGrid}>
-          <p>
-            <strong>Bedrooms:</strong> {listing.bedrooms}
-          </p>
-          <p>
-            <strong>Bathrooms:</strong> {listing.bathrooms}
-          </p>
-        </div>
+      <div className={styles.infoBox}>
+        <p>Price: {apartment.price}</p>
+        <p>Bedrooms: {apartment.bedrooms}</p>
+        <p>Bathrooms: {apartment.bathrooms}</p>
+        <p>Lease Start: {new Date(apartment.leaseStart).toLocaleDateString()}</p>
+        <p>Contract Duration: {apartment.contractDuration} months</p>
       </div>
-
-      {/* Poster Info */}
-      <div className={styles.profileSection}>
-        <h2 className={styles.sectionTitle}>Posted By</h2>
-        <div className={styles.profile}>
-          <img
-            src={listing.poster.profilePicture}
-            alt="Poster Profile"
-            className={styles.profilePicture}
-          />
-          <div className={styles.profileDetails}>
-            <p className={styles.posterName}>{listing.poster.name}</p>
-            <a
-              href={`mailto:${listing.poster.email}`}
-              className={styles.contactButton}
-            >
-              Contact Poster
-            </a>
-          </div>
-        </div>
-      </div>
+      <Link to="/frontpage">Go Back to Frontpage</Link>
     </div>
   );
 };

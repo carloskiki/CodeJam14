@@ -24,7 +24,7 @@ const App: React.FC = () => {
         {isLoggedIn ? (
           <>
             <Route path="/" element={<Mainpage />} />
-            <Route path="/detail" element={<Detailpage />} />
+            <Route path="/detail/:id" element={<Detailpage />} />
             <Route path="/profile" element={<Profile />} />
             <Route 
               path="/frontpage" 

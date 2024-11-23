@@ -15,6 +15,8 @@ const Uploadpage: React.FC = () => {
   const [price, setPrice] = useState('')
   const [bedrooms, setBedrooms] = useState('')
   const [bathrooms, setBathrooms] = useState('')
+  const [leaseStart, setLeaseStart] = useState('')
+  const [contractDuration, setContractDuration] = useState('')
   const [images, setImages] = useState<File[]>([])
   const [thumbnail, setThumbnail] = useState<File | null>(null)
   const [isUploading, setIsUploading] = useState(false)
@@ -35,7 +37,9 @@ const Uploadpage: React.FC = () => {
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setImages(Array.from(e.target.files))
+      const fileArray = Array.from(e.target.files);
+      // Limit to first 10 images if more are selected
+      setImages(fileArray.slice(0, 10));
     }
   }
 
@@ -46,25 +50,30 @@ const Uploadpage: React.FC = () => {
   }
 
   const uploadImage = async (file: File, path: string) => {
-    const fileRef = storageRef(storage, path)
-    await uploadBytes(fileRef, file)
-    return getDownloadURL(fileRef)
+    const fileRef = storageRef(storage, path);
+    await uploadBytes(fileRef, file);
+    return getDownloadURL(fileRef);
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsUploading(true)
+    e.preventDefault();
+    setIsUploading(true);
 
     try {
-      const newIndex = latestIndex + 1
+      const newIndex = latestIndex + 1;
 
-      // Upload thumbnail
-      const thumbnailUrl = thumbnail ? await uploadImage(thumbnail, `${newIndex}/thumbnail/${thumbnail.name}`) : null
+      // Upload all images first (including thumbnail)
+      const imageUploadPromises = images.map((image, index) => 
+        uploadImage(image, `${newIndex}/images/${index}.webp`)
+      );
 
-      // Upload images
-      const imageUrls = await Promise.all(
-        images.map((image, index) => uploadImage(image, `${newIndex}/${index + 1}.webp`))
-      )
+      // Wait for all images to upload and get their URLs
+      const imageUrls = await Promise.all(imageUploadPromises);
+
+      // Set the first image as thumbnail if no specific thumbnail was chosen
+      const thumbnailUrl = thumbnail 
+        ? await uploadImage(thumbnail, `${newIndex}/thumbnail/${thumbnail.name}`)
+        : imageUrls[0];
 
       // Create listing object
       const listing = {
@@ -73,6 +82,8 @@ const Uploadpage: React.FC = () => {
         price: parseFloat(price),
         bedrooms: parseInt(bedrooms),
         bathrooms: parseInt(bathrooms),
+        leaseStart,
+        contractDuration: parseInt(contractDuration),
         imageUrl: thumbnailUrl,
         imageUrls,
         createdAt: Date.now(),
@@ -115,11 +126,32 @@ const Uploadpage: React.FC = () => {
         <Input id="bathrooms" type="number" value={bathrooms} onChange={(e) => setBathrooms(e.target.value)} required />
       </div>
       <div>
+        <Label htmlFor="leaseStart">Lease Start Date</Label>
+        <Input 
+          id="leaseStart" 
+          type="date" 
+          value={leaseStart} 
+          onChange={(e) => setLeaseStart(e.target.value)} 
+          required 
+        />
+      </div>
+      <div>
+        <Label htmlFor="contractDuration">Contract Duration (months)</Label>
+        <Input 
+          id="contractDuration" 
+          type="number" 
+          min="1"
+          value={contractDuration} 
+          onChange={(e) => setContractDuration(e.target.value)} 
+          required 
+        />
+      </div>
+      <div>
         <Label htmlFor="thumbnail">Thumbnail Image</Label>
         <Input id="thumbnail" type="file" onChange={handleThumbnailChange} accept="image/*" required />
       </div>
       <div>
-        <Label htmlFor="images">Additional Images</Label>
+        <Label htmlFor="images">Images</Label>
         <Input id="images" type="file" onChange={handleImageChange} accept="image/*" multiple required />
       </div>
       <Button type="submit" disabled={isUploading}>
