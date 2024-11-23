@@ -1,16 +1,16 @@
-import './App.css';
-import { Routes, Route, Link } from 'react-router-dom';
-import Frontpage from './pages/frontpage';
-import Detailpage from './pages/detailPage';
-import Profile from './pages/profile';
-import Mainpage from './pages/mainpage';
+import "./App.css";
+import { Routes, Route, Link } from "react-router-dom";
+import Frontpage from "./pages/frontpage";
+import Detailpage from "./pages/detailpage";
+import Profile from "./pages/profile";
+import Mainpage from "./pages/mainpage";
 
 const Init: React.FC = () => {
   return (
     <div>
       {/* Navigation Bar */}
       <nav>
-        <ul style={{ display: 'flex', gap: '10px', listStyle: 'none' }}>
+        <ul style={{ display: "flex", gap: "10px", listStyle: "none" }}>
           <li>
             <Link to="/frontpage">Frontpage</Link>
           </li>
