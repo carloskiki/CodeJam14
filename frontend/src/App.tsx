@@ -4,6 +4,7 @@ import Frontpage from "./pages/frontpage";
 import Detailpage from "./pages/detailpage";
 import Profile from "./pages/profile";
 import Mainpage from "./pages/mainpage";
+import Login from "./pages/login";
 
 const Init: React.FC = () => {
   return (
@@ -32,6 +33,7 @@ const Init: React.FC = () => {
         <Route path="/detailpage" element={<Detailpage />} />
         <Route path="/mainpage" element={<Mainpage />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </div>
   );
