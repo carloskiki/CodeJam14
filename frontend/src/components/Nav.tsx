@@ -17,7 +17,7 @@ const Nav: React.FC = () => {
             <Link to="/">Mainpage</Link>
           </li>
           <li>
-            <Link to="/profile">Profile</Link>
+            <Link to="/profile">Update Profile</Link>
           </li>
           <li>
             <Link to="/upload">Upload</Link>
