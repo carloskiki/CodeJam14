@@ -11,6 +11,7 @@ interface Apartment {
   imageUrl: string
 }
 
+//Hardcoded apartments (will need to obtain data from database later)
 const apartments: Apartment[] = [
   { id: 1, title: "Cozy Studio Near Campus", price: "$800/month", bedrooms: 0, bathrooms: 1, imageUrl: "/placeholder.svg?height=200&width=300" },
   { id: 2, title: "Spacious 2BR Apartment", price: "$1200/month", bedrooms: 2, bathrooms: 1, imageUrl: "/placeholder.svg?height=200&width=300" },
@@ -25,7 +26,8 @@ const mainpage: React.FC = () => {
     <div className={styles.container}>
       <header className={styles.header}>
         <div className={styles.headerContent}>
-          <h1 className={styles.title}>McGill Apartment Finder</h1>
+        <img src="/images/McGill.png" alt="McGill Logo" className={styles.logo} />
+          <h1 className={styles.title}>Apartments</h1>
           <div className={styles.searchContainer}>
             <input
               type="text"
