@@ -112,20 +112,20 @@ const Uploadpage: React.FC = () => {
         }
     }
 
-    const handlePlaceChanged = () => {
-        const autocomplete = autocompleteRef.current;
-        if (autocomplete) {
-            const place = autocomplete!.getPlace();
-            const plusCode = place.plus_code?.global_code;
+    // const handlePlaceChanged = () => {
+    //     const autocomplete = autocompleteRef.current;
+    //     if (autocomplete) {
+    //         const place = autocomplete!.getPlace();
+    //         const plusCode = place.plus_code?.global_code;
             
-            if (place.formatted_address) {
-                setAddress(place.formatted_address);
-            }
-            if (plusCode) {
-                setPlusCode(plusCode);
-            }
-        }
-    };
+    //         if (place.formatted_address) {
+    //             setAddress(place.formatted_address);
+    //         }
+    //         if (plusCode) {
+    //             setPlusCode(plusCode);
+    //         }
+    //     }
+    // };
 
     return (
         <div className="container mx-auto px-4 py-8 max-w-3xl">
@@ -135,10 +135,10 @@ const Uploadpage: React.FC = () => {
                     {/* Basic Information */}
                     <h2 className="text-xl font-semibold text-gray-700">Property Address</h2>
                     <div>
-                        <Autocomplete
+                        {/* <Autocomplete
                             onLoad={(autocomplete) => autocompleteRef.current = autocomplete}
                             onPlaceChanged={handlePlaceChanged}
-                        >
+                        > */}
                             <Input
                                 id="address"
                                 placeholder="Enter property address"
@@ -147,7 +147,7 @@ const Uploadpage: React.FC = () => {
                                 className="mt-1 marg"
                                 required
                             />
-                        </Autocomplete>
+                        {/* </Autocomplete> */}
                     </div>
 
                     <div className="space-y-4">
