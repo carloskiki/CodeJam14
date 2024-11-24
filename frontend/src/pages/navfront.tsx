@@ -12,7 +12,7 @@ const navfront: React.FC = () => {
                alt="McGill Logo"
                className={styles.logo}
              />
-           <h1 className={styles.appName}>Martlet's Nest</h1>
+           <h1 className={styles.appName}>Martlet Nest</h1>
          </div>
        </header>
    );
