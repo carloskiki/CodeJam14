@@ -162,7 +162,7 @@ const MainPage: React.FC = () => {
                 <div className={styles.cardContent}>
                   <h2 className={styles.cardTitle}>{apartment.title}</h2>
                   <p className={styles.cardAddress}>{apartment.address}</p>
-                  <p className={styles.cardPrice}>{apartment.price}</p>
+                  <p className={styles.cardPrice}>CAD {apartment.price} per month</p>
                   <div className={styles.cardDetails}>
                     <span>
                       {apartment.bedrooms}{" "}
