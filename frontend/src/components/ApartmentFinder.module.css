@@ -7,69 +7,6 @@
     padding: 0; /* Remove padding */
   }
   
-  .header {
-    background-color: #e83030;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 10px 20px; /* Reduce padding inside the header */
-    margin: 0; /* Ensure no external spacing */
-  }
-  
-  .headerContent {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding-left: 30px;
-    padding-right: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  .title {
-    font-size: 64px; /* Increase font size significantly */
-    font-weight: bold; /* Make the text bold for emphasis */
-    position: relative; /* Allow positioning adjustments */
-    left: -40px; /* Move closer to the left */
-    top: 20px; /* Move it down */
-  }
-  
-  .searchContainer {
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
-  
-  .searchInput {
-    padding: 0.5rem 1rem 0.5rem 2.5rem;
-    border-radius: 9999px;
-    border: none;
-    background-color: white;
-    color: #000000;
-;
-  }
-  
-  .searchIcon {
-    position: absolute;
-    left: 0.75rem;
-    color: #3b82f6;
-  }
-  
-  .loginButton {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background-color: #10b981;
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 9999px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .loginButton:hover {
-    background-color: #059669;
-  }
-  
   .main {
     max-width: 1200px;
     margin: 0 auto;
@@ -129,20 +66,6 @@
     justify-content: space-between;
     font-size: 0.875rem;
     color: #6b7280;
-  }
-
-  .logoContainer {
-    display: flex;
-    align-items: center; /* Align logo and title vertically */
-    gap: 10px; /* Add spacing between the logo and the title */
-    margin: 0; /* Removes any default margins */
-    padding: 0; /* Removes any padding */
-  }
-
-  .logo {
-    width: 120px; /* Adjust the logo size */
-    height: 120px; /* Maintain proportional height */
-    margin: 0;
   }
 
   .gridContainer {

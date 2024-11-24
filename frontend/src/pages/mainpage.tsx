@@ -49,29 +49,6 @@ const mainpage: React.FC = () => {
     
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <div className={styles.headerContent}>
-          <img
-            src="/images/McGill.png"
-            alt="McGill Logo"
-            className={styles.logo}
-          />
-          <h1 className={styles.title}>Apartments</h1>
-          <div className={styles.searchContainer}>
-            <input
-              type="text"
-              placeholder="Search apartments..."
-              className={styles.searchInput}
-            />
-            <Search className={styles.searchIcon} size={20} />
-          </div>
-          <button className={styles.loginButton}>
-            <LogIn size={20} />
-            <span>Profile</span>
-          </button>
-        </div>
-      </header>
-
       <main className={styles.main}>
         <div className={styles.gridContainer}>
           {/* Apartments Grid */}
