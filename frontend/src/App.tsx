@@ -10,6 +10,7 @@ import Header from "./components/header";
 import { useState } from "react";
 import Uploadpage from "./pages/uploadpage";
 import styles from "./components/ApartmentFinder.module.css";
+import Navfront from "./pages/navfront";
 
 const App: React.FC = () => {
   const [loggedIn, setLoggedIn] = useState(true);
