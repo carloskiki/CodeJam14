@@ -99,6 +99,13 @@ const DetailPage: React.FC = () => {
         {/* Title and Price */}
         <div className="mb-4 mt-3 text-left pl-2">
           <h1 className="text-5xl font-bold">{apartment.title}</h1>
+          <div className="relative">
+            <img
+              src={apartment.poster?.profilePhoto ?? ""}
+              alt={`${apartment.poster?.name ?? ""}'s profile`}
+              className="absolute top-0 right-4 w-16 h-16 rounded-full border-2 border-gray-300"
+            />
+          </div>
           <p className="text-2xl font-semibold text-gray-500 ">
             123 Placeholder Street, City, Country
           </p>{" "}
@@ -185,11 +192,6 @@ const DetailPage: React.FC = () => {
 
         <div className="flex items-center">
           <div className="flex items-center gap-16">
-            <img
-              src={apartment.poster?.profilePhoto ?? ""}
-              alt={`${apartment.poster?.name ?? ""}'s profile`}
-              className="w-16 h-16 rounded-full border-2 border-gray-300"
-            />
           </div>
           <p className="text-lg font-semibold">
             {apartment.poster?.name ?? ""}
