@@ -193,7 +193,7 @@
 .cardPrice {
   font-size: 1.125rem;
   font-weight: 700;
-  color: #3b82f6;
+  color: #e83030;
   margin-bottom: 0.5rem;
 }
 
@@ -291,3 +291,7 @@
   margin-bottom: 10px;
 }
 
+.cardAddress {
+  font-size: 0.9rem; /* Slightly smaller than the title */
+  color: #6b7280; /* Gray color for a subtle look */
+}

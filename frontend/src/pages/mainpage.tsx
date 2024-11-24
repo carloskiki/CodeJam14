@@ -17,42 +17,42 @@ interface Apartment {
 }
 
 interface ApartmentData {
-    [id: number]: Apartment
+  [id: number]: Apartment;
 }
 
 const mainpage: React.FC = () => {
-   const [apartments, setApartments] = useState<ApartmentData | null>(null);
-   const [loading, setLoading] = useState(true);
-   const navigate = useNavigate();
+  const [apartments, setApartments] = useState<ApartmentData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-   const handleLogout = () => {
+  const handleLogout = () => {
     // Perform any logout logic here (e.g., clearing user session)
-    navigate('/frontpage'); // Navigate to the frontpage
+    navigate("/frontpage"); // Navigate to the frontpage
   };
- 
-   // Fetch data from Firebase on component mount
-   useEffect(() => {
-     const fetchData = async () => {
-       try {
-         const snapshot = await get(ref(db, 'Listings/')); // Adjust path as necessary
-         if (snapshot.exists()) {
-           setApartments(snapshot.val());  // Set the data into state
-         } else {
-           console.log('No data available');
-         }
-       } catch (error) {
-         console.error('Error fetching data:', error);
-       } finally {
-         setLoading(false);  // Set loading to false after fetching
-       }
-     };
- 
-     fetchData();  // Call fetch function on component load
-   }, []); // Empty array means it only runs on mount (componentDidMount)
- 
-   if (loading) {
-     return <div>Loading...</div>;
-   }
+
+  // Fetch data from Firebase on component mount
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const snapshot = await get(ref(db, "Listings/")); // Adjust path as necessary
+        if (snapshot.exists()) {
+          setApartments(snapshot.val()); // Set the data into state
+        } else {
+          console.log("No data available");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false); // Set loading to false after fetching
+      }
+    };
+
+    fetchData(); // Call fetch function on component load
+  }, []); // Empty array means it only runs on mount (componentDidMount)
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className={styles.container}>
@@ -75,11 +75,14 @@ const mainpage: React.FC = () => {
             <Search className={styles.searchIcon} size={20} />
           </div>
           <Link to="/profile" className={styles.profileLink}>
-            <RiAccountCircleFill className={styles.profileIconButton} size={50} />
+            <RiAccountCircleFill
+              className={styles.profileIconButton}
+              size={50}
+            />
           </Link>
           <button className={styles.logoutButton} onClick={handleLogout}>
             <LogOut size={20} />
-              <span>Logout</span>
+            <span>Logout</span>
           </button>
         </div>
       </header>
@@ -99,6 +102,11 @@ const mainpage: React.FC = () => {
                 </Link>
                 <div className={styles.cardContent}>
                   <h2 className={styles.cardTitle}>{apartment.title}</h2>
+                  <p className={styles.cardAddress}>
+                    123 Placeholder Street, City, Country
+                  </p>
+                  {/*Address Line to be Updated*/}
+
                   <p className={styles.cardPrice}>{apartment.price}</p>
                   <div className={styles.cardDetails}>
                     <span>
@@ -120,13 +128,12 @@ const mainpage: React.FC = () => {
             <iframe
               width="400"
               height="400"
-              style={{"border": 0}}
+              style={{ border: 0 }}
               loading="lazy"
               allowFullScreen
               referrerPolicy="no-referrer-when-downgrade"
               src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDcwqtIoz_pE2Ylu2cxAv00XKzVqKonZSo&q=Space+Needle,Seattle+WA"
-                  >
-            </iframe>
+            ></iframe>
           </div>
         </div>
       </main>
@@ -136,8 +143,7 @@ const mainpage: React.FC = () => {
 
 export default mainpage;
 
-
-// 
+//
 //   return (
 //     <div className={styles.container}>
 //       <header className={styles.header}>
@@ -157,7 +163,7 @@ export default mainpage;
 //           </button>
 //         </div>
 //       </header>
-// 
+//
 //       <main className={styles.main}>
 //         <div className={styles.grid}>
 //           {Object.entries(apartments!).map(([key, apartment]) => (
