@@ -58,6 +58,15 @@
   line-height: 0;
 }
 
+.appName {
+  font-size: 64px;
+  font-weight: bold;
+  position: absolute;
+  left: 350px;
+  top: 0px;
+  color: white;
+}
+
 .title {
   font-size: 64px;
   font-weight: bold;

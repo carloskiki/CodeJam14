@@ -5,12 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import { sendSignInLinkToEmail } from "firebase/auth";
 import { auth } from '@/firebase';
 import { Button } from "@/components/ui/button";
+import Navfront from "../pages/navfront";
 
 const actionCodeSettings = {
-  // URL you want to redirect back to. The domain (www.example.com) for this
-  // URL must be in the authorized domains list in the Firebase Console.
   url: 'http://localhost:5173/finishSignUp',
-  // This must be true.
   handleCodeInApp: true,
 };
 
@@ -20,7 +18,6 @@ enum LoginStatus {
 }
 
 const Frontpage: React.FC = () => {
-
   const [email, setEmail] = useState('');
   const [state, setState] = useState<LoginStatus | null>(null);
   const navigate = useNavigate();
@@ -36,16 +33,12 @@ const Frontpage: React.FC = () => {
     
     sendSignInLinkToEmail(auth, email, actionCodeSettings)
       .then(() => {
-        // The link was successfully sent. Inform the user.
-        // Save the email locally so you don't need to ask the user for it again
-        // if they open the link on the same device.
         window.localStorage.setItem('emailForSignIn', email);
         setState(LoginStatus.Sent);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-
         setState(LoginStatus.Error);
         console.error(errorCode, errorMessage);
       });
@@ -62,16 +55,21 @@ const Frontpage: React.FC = () => {
     }
   };
 
-    
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24"
-    style={{ backgroundImage: 'url("/images/mcgill-bg.jpeg")', backgroundSize: 'cover', backgroundPosition: 'center' }}
-    >
-      <div className="space-x-4">
-        <div className="flex bg-transparent items-center justify-center bg-gray-100">
-          <Card className="w-[400px]">
+    <div className="flex flex-col min-h-screen">
+      <Navfront />
+      <main 
+        className="flex-grow flex flex-col items-center justify-center p-24"
+        style={{ 
+          backgroundImage: 'url("/images/mcgill-bg.jpeg")', 
+          backgroundSize: 'cover', 
+          backgroundPosition: 'center' 
+        }}
+      >
+        <div className="w-full max-w-md">
+          <Card className="w-full">
             <CardHeader>
-              <CardTitle className="text-2xl font-bold ">Welcome!</CardTitle>
+              <CardTitle className="text-2xl font-bold">Welcome!</CardTitle>
               <p className="text-sm text-gray-500">Enter your McGill email, and we'll take it from there.</p>
             </CardHeader>
             <CardContent>
@@ -86,24 +84,27 @@ const Frontpage: React.FC = () => {
                   />
                 </div>
 
-                {/* Conditionally render error message */}
                 {renderStatusMessage(state)}
                 
                 <div className="flex justify-between">
                   <Button type="button" variant="outline" onClick={() => navigate('/frontpage')}>
                     Cancel
                   </Button>
-                  <Button type="submit" className="bg-[#e83030] transform
-                  hover:translate-y-[-2px] hover:bg-[#e83030] hover:border-[#e83030]
-                  transition-transform duration-200">Login</Button>
+                  <Button 
+                    type="submit" 
+                    className="bg-[#e83030] transform hover:translate-y-[-2px] hover:bg-[#e83030] hover:border-[#e83030] transition-transform duration-200"
+                  >
+                    Login
+                  </Button>
                 </div>
               </form>
             </CardContent>
           </Card>
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
   );
 };
 
 export default Frontpage;
+
