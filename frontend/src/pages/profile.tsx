@@ -143,21 +143,21 @@ const ProfilePage: React.FC = () => {
             />
           </div>
 
-          <div>
+          <div className="flex flex-col items-center">
             <Label htmlFor="profilePhoto">Profile Photo</Label>
             <Input
               type="file"
               id="profilePhoto"
               onChange={handleFileChange}
-              className="mt-1"
+              className="mt-1 w-auto h-auto p-2 border border-gray-300 rounded-md text-center text-sm"
               accept="image/*"
-            />
+              />
             {profilePhotoUrl && (
               <div className="mt-2">
                 <img
-                  src={profilePhotoUrl}
-                  alt="Profile"
-                  className="w-24 h-24 rounded-full object-cover"
+                src={profilePhotoUrl}
+                alt="Profile"
+                className="w-24 h-24 rounded-full text-center object-cover"
                 />
               </div>
             )}
