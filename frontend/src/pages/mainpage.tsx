@@ -1,9 +1,12 @@
 import React from "react";
-import { Search, LogIn } from "lucide-react";
+import { Search, LogIn, LogOut } from "lucide-react";
 import { useState, useEffect } from "react";
 import styles from "../components/ApartmentFinder.module.css";
 import { get, ref } from "firebase/database";
 import { db } from "@/firebase";
+import { RiAccountCircleFill } from "react-icons/ri";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import Mainpage from "../pages/mainpage";
 
 interface Apartment {
   id: number;
@@ -21,6 +24,12 @@ interface ApartmentData {
 const mainpage: React.FC = () => {
    const [apartments, setApartments] = useState<ApartmentData | null>(null);
    const [loading, setLoading] = useState(true);
+   const navigate = useNavigate();
+
+   const handleLogout = () => {
+    // Perform any logout logic here (e.g., clearing user session)
+    navigate('/frontpage'); // Navigate to the frontpage
+  };
  
    // Fetch data from Firebase on component mount
    useEffect(() => {
@@ -45,17 +54,18 @@ const mainpage: React.FC = () => {
    if (loading) {
      return <div>Loading...</div>;
    }
- 
-    
+
   return (
     <div className={styles.container}>
       <header className={styles.header}>
         <div className={styles.headerContent}>
-          <img
-            src="/images/McGill.png"
-            alt="McGill Logo"
-            className={styles.logo}
-          />
+          <Link to="/" className={styles.logoLink}>
+            <img
+              src="/images/McGill.png"
+              alt="McGill Logo"
+              className={styles.logo}
+            />
+          </Link>
           <h1 className={styles.title}>Apartments</h1>
           <div className={styles.searchContainer}>
             <input
@@ -65,9 +75,12 @@ const mainpage: React.FC = () => {
             />
             <Search className={styles.searchIcon} size={20} />
           </div>
-          <button className={styles.loginButton}>
-            <LogIn size={20} />
-            <span>Profile</span>
+          <Link to="/profile" className={styles.profileLink}>
+            <RiAccountCircleFill className={styles.profileIconButton} size={50} />
+          </Link>
+          <button className={styles.logoutButton} onClick={handleLogout}>
+            <LogOut size={20} />
+              <span>Logout</span>
           </button>
         </div>
       </header>
