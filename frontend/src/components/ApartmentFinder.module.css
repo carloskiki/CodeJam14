@@ -328,3 +328,61 @@
   font-size: 0.9rem; /* Slightly smaller than the title */
   color: #6b7280; /* Gray color for a subtle look */
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px; /* Adds spacing between the listings and buttons */
+  position: relative; /* Keeps it within the flow of the container */
+  width: 100%;
+}
+
+/* Button styles */
+.pagePrevButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: grey;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  position: absolute;
+  bottom: -30px;
+  left: 0px;
+}
+.pageNextButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: grey;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  position: absolute;
+  bottom: -30px;
+  right: -630px;
+}
+
+.pagePrevButton:hover {
+  background-color: grey;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.pagePrevButton:disabled {
+  background-color: #d6d6d6;
+  cursor: not-allowed;
+}
+
+.pageNextButton:hover {
+  background-color: grey;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.pageNextButton:disabled {
+  background-color: #d6d6d6;
+  cursor: not-allowed;
+}
