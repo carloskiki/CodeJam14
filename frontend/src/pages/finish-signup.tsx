@@ -2,9 +2,11 @@ import React from 'react';
 import { isSignInWithEmailLink, signInWithEmailLink } from "firebase/auth";
 import { auth } from "@/firebase";
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
 
-const FinishSignup: React.FC = ({ setLoggedIn }) => {
+const FinishSignup: React.FC = () => {
     const navigate = useNavigate();
+    const { setEmail, setIsLoggedIn } = useUser();
 
     if (isSignInWithEmailLink(auth, window.location.href)) {
         // Additional state parameters can also be passed via URL.
@@ -31,7 +33,8 @@ const FinishSignup: React.FC = ({ setLoggedIn }) => {
                 // You can check if the user is new or existing:
                 // getAdditionalUserInfo(result)?.isNewUser
                 console.log('Successfully signed in with email link!');
-                setLoggedIn(true);
+                setEmail(email!);
+                setIsLoggedIn(true);
                 navigate('/');
             })
             .catch((error) => {
@@ -52,5 +55,3 @@ const FinishSignup: React.FC = ({ setLoggedIn }) => {
 };
 
 export default FinishSignup;
-
-

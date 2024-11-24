@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import styles from "../components/ApartmentFinder.module.css";
 import { ref, get } from "firebase/database";
 import { db } from "../firebase";
@@ -16,6 +16,13 @@ import {
 } from "lucide-react";
 import { PopupButton } from "react-calendly";
 
+interface PosterProfile {
+  name: string;
+  phoneNumber: string;
+  profilePhoto: string;
+  email: string;
+}
+
 interface ApartmentDetails {
   id: number;
   title: string;
@@ -28,8 +35,7 @@ interface ApartmentDetails {
   leaseStart: string;
   contractDuration: number;
   poster: {
-    name: string; //name of user
-    profilePhoto: string; //pfp for user
+    email: string;
   };
   location: string;
 }
@@ -37,30 +43,52 @@ interface ApartmentDetails {
 const DetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [apartment, setApartment] = useState<ApartmentDetails | null>(null);
+  const [posterProfile, setPosterProfile] = useState<PosterProfile | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchApartmentDetails = async () => {
+    const fetchData = async () => {
+      if (!id) return;
+
       try {
+        // Fetch apartment details
         const apartmentRef = ref(db, `Listings/${id}`);
-        const snapshot = await get(apartmentRef);
-        if (snapshot.exists()) {
-          setApartment(snapshot.val());
-        } else {
-          console.error("No data available");
+        const apartmentSnapshot = await get(apartmentRef);
+        
+        if (apartmentSnapshot.exists()) {
+          const apartmentData = apartmentSnapshot.val() as ApartmentDetails;
+          setApartment(apartmentData);
+
+          // Fetch poster profile using the email from apartment data
+          if (apartmentData.poster?.email) {
+            const posterRef = ref(db, `Poster/${apartmentData.poster.email.replace(/\./g, '_')}`);
+            const posterSnapshot = await get(posterRef);
+            
+            if (posterSnapshot.exists()) {
+              setPosterProfile(posterSnapshot.val() as PosterProfile);
+            }
+          }
         }
       } catch (error) {
-        console.error("Error fetching apartment details:", error);
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchApartmentDetails();
+    fetchData();
   }, [id]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   if (!apartment) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-xl">Loading apartment details...</p>
+      <div>
+        <p>Apartment not found</p>
+        <Link to="/">Back to listings</Link>
       </div>
     );
   }
@@ -101,8 +129,8 @@ const DetailPage: React.FC = () => {
           <h1 className="text-5xl font-bold">{apartment.title}</h1>
           <div className="relative">
             <img
-              src={apartment.poster?.profilePhoto ?? ""}
-              alt={`${apartment.poster?.name ?? ""}'s profile`}
+              src={posterProfile?.profilePhoto || "/default-profile.png"}
+              alt={`${posterProfile?.name || "Anonymous"}'s profile`}
               className="absolute top-0 right-4 w-16 h-16 rounded-full border-2 border-gray-300"
             />
           </div>
@@ -190,19 +218,35 @@ const DetailPage: React.FC = () => {
           </Card>
         </div>
 
-        <div className="flex items-center">
-          <div className="flex items-center gap-16">
+        {/* Poster Information */}
+        <Card className="p-6 mt-6 max-w-xl mx-auto">
+          <h2 className="text-xl font-semibold mb-4 text-center">Contact Information</h2>
+          <div className="flex flex-col items-center gap-4">
+            <div className="flex-shrink-0">
+              <img
+                src={posterProfile?.profilePhoto || "/default-profile.png"}
+                alt={`${posterProfile?.name || "Anonymous"}'s profile`}
+                className="w-20 h-20 rounded-full border-2 border-gray-300 object-cover"
+              />
+            </div>
+            <div className="flex flex-col items-center gap-1">
+              <p className="text-lg font-semibold">
+                {posterProfile?.name || "Anonymous"}
+              </p>
+              <p className="text-sm text-gray-600">
+                {posterProfile?.email || apartment.poster?.email || "No email provided"}
+              </p>
+              {posterProfile?.phoneNumber && (
+                <p className="text-sm text-gray-600">
+                  {posterProfile.phoneNumber}
+                </p>
+              )}
+            </div>
           </div>
-          <p className="text-lg font-semibold">
-            {apartment.poster?.name ?? ""}
-          </p>
-          <p className="text-sm font-semibold">
-            {apartment.poster?.name ?? ""}
-          </p>
-        </div>
+        </Card>
 
         {/* Schedule Button */}
-        <div className="text-center">
+        <div className="text-center mt-6">
           <PopupButton
             url="https://calendly.com/moodcatcher103/apartment-visit"
             rootElement={document.getElementById("root")!}

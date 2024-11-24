@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
+import { useUser } from '../context/UserContext';
 import { Autocomplete } from '@react-google-maps/api';
 import {
   ChevronLeft,
@@ -20,20 +21,21 @@ import {
 } from "lucide-react";
 
 const Uploadpage: React.FC = () => {
-    const navigate = useNavigate()
-    const [address, setAddress] = useState('')
-    const [plusCode, setPlusCode] = useState('')
-    const [title, setTitle] = useState('')
-    const [description, setDescription] = useState('')
-    const [price, setPrice] = useState('')
-    const [bedrooms, setBedrooms] = useState('')
-    const [bathrooms, setBathrooms] = useState('')
-    const [leaseStart, setLeaseStart] = useState('')
-    const [contractDuration, setContractDuration] = useState('')
-    const [images, setImages] = useState<File[]>([])
-    const [thumbnail, setThumbnail] = useState<File | null>(null)
-    const [isUploading, setIsUploading] = useState(false)
-    const [latestIndex, setLatestIndex] = useState<number>(0)
+  const navigate = useNavigate()
+  const { email } = useUser();
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [price, setPrice] = useState('')
+  const [bedrooms, setBedrooms] = useState('')
+  const [bathrooms, setBathrooms] = useState('')
+  const [leaseStart, setLeaseStart] = useState('')
+  const [contractDuration, setContractDuration] = useState('')
+  const [images, setImages] = useState<File[]>([])
+  const [thumbnail, setThumbnail] = useState<File | null>(null)
+  const [isUploading, setIsUploading] = useState(false)
+  const [latestIndex, setLatestIndex] = useState<number>(0)
+  const [address, setAddress] = useState('')
+  const [plusCode, setPlusCode] = useState('')
 
     // Use ref to store the autocomplete instance
     const autocompleteRef = useRef(null);
@@ -105,11 +107,14 @@ const Uploadpage: React.FC = () => {
                 imageUrl: thumbnailUrl,
                 imageUrls,
                 createdAt: Date.now(),
+                poster: {
+                  email: email
+                }
             }
 
             // Save to Firebase Realtime Database
-            const newListingRef = dbRef(db, `Listings/${newIndex}`)
-            await set(newListingRef, listing)
+            const newListingRef = dbRef(db, `Listings/${newIndex}`);
+            await set(newListingRef, listing);
 
             // Redirect to home page or listing page
             navigate('/')
@@ -317,4 +322,3 @@ const Uploadpage: React.FC = () => {
 }
 
 export default Uploadpage
-
