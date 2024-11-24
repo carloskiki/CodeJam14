@@ -4,39 +4,38 @@ import Frontpage from "./pages/frontpage";
 import Detailpage from "./pages/detailpage";
 import Profile from "./pages/profile";
 import Mainpage from "./pages/mainpage";
-import Uploadpage from "./pages/uploadpage";
 import NavBar from "./components/Nav";
-import Login from './pages/login';
+import FinishSignup from "./pages/finish-signup";
+import Header from "./components/header";
+import { useState } from "react";
+import Uploadpage from "./pages/uploadpage";
+import styles from "./components/ApartmentFinder.module.css";
 
 const App: React.FC = () => {
-  const isLoggedIn = true;
-  const navigate = useNavigate();
-
-  // Implement the navigation function
-  const handleNavigate = (view: "login" | "signup") => {
-    navigate(`/${view}`);
-  };
+  const [loggedIn, setLoggedIn] = useState(true);
 
   return (
-    <div>
+    <div className={styles.container}>
       <NavBar />
       <Routes>
-        {isLoggedIn ? (
+        {loggedIn ? (
           <>
             <Route path="/" element={<Mainpage />} />
-            <Route path="/detail" element={<Detailpage />} />
+            <Route path="/detail/:id" element={<Detailpage />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/upload" element={<Uploadpage />} />
             <Route 
               path="/frontpage" 
-              element={<Frontpage navigateTo={handleNavigate} />} 
+              element={<Frontpage />} 
             />
           </>
         ) : (
           <Route 
             path="/" 
-            element={<Frontpage navigateTo={handleNavigate} />} 
+            element={<Frontpage />} 
           />
         )}
+        <Route path="/finishSignUp" element={<FinishSignup setLoggedIn={setLoggedIn} />} />
       </Routes>
     </div>
   );

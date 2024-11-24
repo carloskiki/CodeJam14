@@ -2,15 +2,13 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useNavigate } from 'react-router-dom';
 
-interface SignupProps {
-  navigateTo: (view: 'frontpage') => void;
-}
-
-function Signup({ navigateTo }: SignupProps) {
+function Signup() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,7 +60,7 @@ function Signup({ navigateTo }: SignupProps) {
             </div>
             <div className="flex justify-between">
               <Button type="submit">Sign Up</Button>
-              <Button type="button" variant="outline" onClick={() => navigateTo('frontpage')}>
+              <Button type="button" variant="outline" onClick={() => navigate('/frontpage')}>
                 Cancel
               </Button>
             </div>

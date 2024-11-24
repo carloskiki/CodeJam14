@@ -6,7 +6,6 @@ import { get, ref } from "firebase/database";
 import { db } from "@/firebase";
 import { RiAccountCircleFill } from "react-icons/ri";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import Mainpage from "../pages/mainpage";
 
 interface Apartment {
   id: number;
@@ -91,11 +90,13 @@ const mainpage: React.FC = () => {
           <div className={styles.apartmentGrid}>
             {Object.entries(apartments!).map(([id, apartment]) => (
               <div key={id} className={styles.card}>
-                <img
-                  src={apartment.imageUrl}
-                  alt={apartment.title}
-                  className={styles.cardImage}
-                />
+                <Link to={`/detail/${id}`}>
+                  <img
+                    src={apartment.imageUrl}
+                    alt={apartment.title}
+                    className={styles.cardImage}
+                  />
+                </Link>
                 <div className={styles.cardContent}>
                   <h2 className={styles.cardTitle}>{apartment.title}</h2>
                   <p className={styles.cardPrice}>{apartment.price}</p>
@@ -134,7 +135,6 @@ const mainpage: React.FC = () => {
 };
 
 export default mainpage;
-
 
 
 // 
