@@ -245,6 +245,7 @@
   border-radius: 8px;
   padding: 20px;
   text-align: center;
+  flex: 0.8;
 }
 
 /* Detail Page Styles */

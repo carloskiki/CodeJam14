@@ -15,6 +15,7 @@ import {
   Clock,
 } from "lucide-react";
 import { PopupButton } from "react-calendly";
+import { DirectionsRenderer, DirectionsService, GoogleMap, InfoWindow } from "@react-google-maps/api";
 
 interface PosterProfile {
   name: string;
@@ -39,7 +40,11 @@ interface ApartmentDetails {
     email: string;
   };
   location: string;
+  latitude: number;
+  longitude: number;
 }
+
+const endLocation = { lat: 45.504, lng: -73.577 };
 
 const DetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -47,6 +52,8 @@ const DetailPage: React.FC = () => {
   const [posterProfile, setPosterProfile] = useState<PosterProfile | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [directions, setDirections] = useState<google.maps.DirectionsResult | null>(null);
+  const [eta, setEta] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,8 +85,25 @@ const DetailPage: React.FC = () => {
       }
     };
 
+
     fetchData();
   }, [id]);
+
+  
+  // Handle the DirectionsService response
+  const handleDirectionsResponse = (result, status) => {
+    if (status === "OK") {
+        if (directions === null) {
+            setDirections(result);
+          // Extract the travel duration from the directions result
+          const travelDuration = result.routes[0].legs[0].duration.text; // Duration in human-readable format
+          setEta(travelDuration); // Set the ETA in human-readable format
+            
+        }
+    } else {
+      console.error("Error fetching directions:", status);
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -218,9 +242,11 @@ const DetailPage: React.FC = () => {
             </p>
           </Card>
         </div>
+        
 
+        <div className="flex justify-between">
         {/* Poster Information */}
-        <Card className="p-6 mt-6 max-w-xl mx-auto">
+        <Card className="p-6 mt-6 min-w-96 max-w-xl mx-auto h-64">
           <h2 className="text-xl font-semibold mb-4 text-center">Contact Information</h2>
           <div className="flex flex-col items-center gap-4">
             <div className="flex-shrink-0">
@@ -245,6 +271,45 @@ const DetailPage: React.FC = () => {
             </div>
           </div>
         </Card>
+          <div className={styles.map}>
+            <GoogleMap
+              mapContainerStyle={{ width: "100%", height: "400px" }}
+              center={endLocation}
+              zoom={14}
+            >
+              {/* Show the route using DirectionsRenderer */}
+              {directions && (
+                <DirectionsRenderer
+                  directions={directions}
+                />
+              )}
+              
+
+              {/* DirectionsService to calculate the route */}
+              <DirectionsService
+                options={{
+                  origin: {
+                    lat: apartment.latitude,
+                    lng: apartment.longitude,
+                  },
+                  destination: endLocation,
+                  travelMode: "WALKING", // You can change to WALKING, BICYCLING, etc.
+                }}
+                callback={handleDirectionsResponse}
+              />
+
+          {/* Optional: Show the ETA with an InfoWindow on the map */}
+        {eta && (
+              <InfoWindow position={endLocation}>
+                <div>
+                  <strong>Walking:</strong> {eta}
+                </div>
+              </InfoWindow>
+            )}
+            </GoogleMap>
+          </div>
+        
+        </div>
 
         {/* Schedule Button */}
         <div className="text-center mt-6">
