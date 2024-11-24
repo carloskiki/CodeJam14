@@ -5,6 +5,7 @@ import { get, query, ref, orderByKey, limitToFirst, limitToLast, startAfter, end
 import { db } from "@/firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { RiAccountCircleFill } from "react-icons/ri";
+import { GoogleMap, Marker } from "@react-google-maps/api";
 
 interface Apartment {
   id: string;
@@ -34,11 +35,11 @@ const MainPage: React.FC = () => {
   // **Fetch Apartments**
   const fetchApartments = async (action: "next" | "prev") => {
     setLoading(true);
-
+  
     try {
       const apartmentsRef = ref(db, "Listings/");
       let apartmentsQuery;
-
+  
       if (action === "next" && lastKey) {
         apartmentsQuery = query(
           apartmentsRef,
@@ -61,28 +62,35 @@ const MainPage: React.FC = () => {
           limitToFirst(POSTS_PER_PAGE)
         );
       }
-
+  
       const snapshot = await get(apartmentsQuery);
-
+  
       if (snapshot.exists()) {
         const data = snapshot.val();
         const fetchedApartments = Object.entries(data).map(([id, value]) => ({
           id,
           ...(value as Apartment),
         }));
-
+  
         setApartments(fetchedApartments);
-
-        // Update the keys for pagination
+  
         if (fetchedApartments.length > 0) {
-          setFirstKey(fetchedApartments[0].id); // First item of the current page
-          setLastKey(fetchedApartments[fetchedApartments.length - 1].id); // Last item of the current page
-
-          // Check if there are more pages
+          const newFirstKey = fetchedApartments[0].id; // First item of the new page
+          const newLastKey = fetchedApartments[fetchedApartments.length - 1].id; // Last item of the new page
+  
+          setFirstKey(newFirstKey);
+          setLastKey(newLastKey);
+  
+          // Set `hasNextPage` if we have enough items to fill the page
           setHasNextPage(fetchedApartments.length === POSTS_PER_PAGE);
-
-          // If we are on the first page, disable prev
-          setHasPrevPage(action === "next" || action === "prev");
+  
+          // Determine `hasPrevPage`
+          if (action === "prev" && newFirstKey === fetchedApartments[0].id && !firstKey) {
+            // Back to the first page
+            setHasPrevPage(newFirstKey !== fetchedApartments[0].id);
+          } else {
+            setHasPrevPage(action === "prev" || (action === "next" && firstKey !== null));
+          }
         }
       } else {
         setApartments([]);
@@ -99,6 +107,7 @@ const MainPage: React.FC = () => {
   // Load the initial page
   useEffect(() => {
     fetchApartments("next");
+    setHasPrevPage(false);
   }, []);
 
   if (loading && apartments.length === 0) {
@@ -112,7 +121,7 @@ const MainPage: React.FC = () => {
           <Link to="/" className={styles.logoLink}>
             <img src="/images/McGill.png" alt="McGill Logo" className={styles.logo} />
           </Link>
-          <h1 className={styles.title}>Apartments</h1>
+          <h1 className={styles.title}>partments</h1>
           <div className={styles.searchContainer}>
             <input
               type="text"
@@ -121,6 +130,13 @@ const MainPage: React.FC = () => {
             />
             <Search className={styles.searchIcon} size={20} />
           </div>
+
+          <Link to="/upload" className={styles.profileLink}>
+            <button className={styles.uploadButton}>
+              <span>Post Listing</span>
+            </button>
+          </Link>
+
           <Link to="/profile" className={styles.profileLink}>
             <RiAccountCircleFill className={styles.profileIconButton} size={50} />
           </Link>
@@ -160,6 +176,20 @@ const MainPage: React.FC = () => {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Map Section */}
+          <div className={styles.map}>
+            <GoogleMap
+              mapContainerStyle={{ width: "100%", height: "400px" }}
+              /* TODO: Make this be the places in the mainpage */
+              center={{ lat: 45.504, lng: -73.577 }}
+              zoom={15}
+            >
+              {/* TODO: Make this be the places in the mainpage */}
+              <Marker position={{ lat: 45.504, lng: -73.577 }} />
+            </GoogleMap>
+          </div>
 
           {/* Pagination Controls */}
           <div className={styles.pagination}>
@@ -178,10 +208,10 @@ const MainPage: React.FC = () => {
               Next
             </button>
           </div>
-          </div>
+
         </div>
       </main>
-    </div>
+      </div>
   );
 };
 

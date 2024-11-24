@@ -21,7 +21,7 @@ const AppRoutes: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <NavBar />
+      {/* <NavBar /> */}
       <LoadScript
         googleMapsApiKey="AIzaSyDcwqtIoz_pE2Ylu2cxAv00XKzVqKonZSo"
         libraries={mapsLibraries}

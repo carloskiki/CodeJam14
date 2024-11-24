@@ -25,7 +25,7 @@
 .header {
   background-color: #e83030;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 40px 20px;
+  padding: 40px 20px 88px;
   height: 120px;
   margin: 0;
 }
@@ -43,7 +43,7 @@
 .headerContent {
   position: relative;
   margin: 0;
-  padding: 0 30px;
+  padding: 0 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -95,19 +95,19 @@
   font-size: 64px;
   font-weight: bold;
   position: absolute;
-  left: 150px;
-  top: 0px;
+  left: 90px;
+  top: 7px;
   color: white;
 }
 
 /* Search */
 .searchContainer input{
   position: absolute;
-  right: -10px;
-  top: 30px;
+  right: 600px;
+  top: 9px;
   display: flex;
   align-items: center;
-  width: 400px;
+  width: 600px;
 }
 
 .searchInput {
@@ -120,15 +120,16 @@
 
 .searchIcon {
   position: absolute;
-  right: 360px;
-  top: 40px;
+  right: 1167px;
+  top: 18px;
   color: #3b82f6;
 }
 
 /* Buttons */
 .logoutButton {
+  font-weight: bold;
   position: absolute;
-  top: -33px;
+  top: -30px;
   right: -10px;
   height: 40px;
   display: flex;
@@ -362,7 +363,7 @@
   transition: background-color 0.3s ease;
   position: absolute;
   bottom: -30px;
-  right: -630px;
+  right: 0px;
 }
 
 .pagePrevButton:hover {
@@ -385,4 +386,31 @@
 .pageNextButton:disabled {
   background-color: #d6d6d6;
   cursor: not-allowed;
+}
+
+.uploadButton {
+  position: absolute;
+  font-weight: bold;
+  font-size: 20px;
+  top: 20px;
+  right: -8px;
+  width: 170px;
+  height: 55px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;  /* Center text horizontally */
+  gap: 0.7rem;
+  background-color: lightgrey;
+  color: black;
+  padding: 0.3rem 0.7rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.uploadButton:hover {
+  background-color: grey;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }

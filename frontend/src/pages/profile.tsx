@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { Home } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';  // Import useNavigate from react-router-dom
 
 interface UserProfile {
   name: string;
@@ -23,13 +25,13 @@ const ProfilePage: React.FC = () => {
   const [profilePhotoUrl, setProfilePhotoUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const storage = getStorage();
+  const navigate = useNavigate();  // Initialize navigate hook
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       if (!email) return;
 
       try {
-        // Replace dots in email with underscores for Firebase path
         const userRef = ref(db, `Poster/${email.replace(/\./g, '_')}`);
         const snapshot = await get(userRef);
         
@@ -62,7 +64,6 @@ const ProfilePage: React.FC = () => {
       let photoUrl = profilePhotoUrl;
 
       if (profilePhoto) {
-        // Upload new profile photo if selected
         const imageRef = storageRef(storage, `profile-photos/${email}/${profilePhoto.name}`);
         await uploadBytes(imageRef, profilePhoto);
         photoUrl = await getDownloadURL(imageRef);
@@ -75,7 +76,6 @@ const ProfilePage: React.FC = () => {
         email
       };
 
-      // Save to Firebase Realtime Database
       const userRef = ref(db, `Poster/${email.replace(/\./g, '_')}`);
       await set(userRef, userData);
 
@@ -95,6 +95,15 @@ const ProfilePage: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <Card className="max-w-2xl mx-auto p-6">
+        {/* Back Button */}
+        <Button
+          variant="outline"
+          onClick={() => navigate('/')}  // Navigate to the main page
+          className="absolute top-30 left-300 mb-4 flex items-center border border-black text-black-500 hover:bg-gray-400 hover:border-black"
+          >
+          <Home className="mr-2" size={20} />
+          Back
+        </Button>
         <h1 className="text-2xl font-bold mb-6">Profile Settings</h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>

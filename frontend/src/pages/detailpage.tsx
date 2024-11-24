@@ -33,6 +33,7 @@ interface ApartmentDetails {
   imageUrl: string;
   imageUrls: string[];
   leaseStart: string;
+  address: string;
   contractDuration: number;
   poster: {
     email: string;
@@ -135,7 +136,7 @@ const DetailPage: React.FC = () => {
             />
           </div>
           <p className="text-2xl font-semibold text-gray-500 ">
-            123 Placeholder Street, City, Country
+            {apartment.address}
           </p>{" "}
           {/*need to link this to .location field!!!!!!}*/}
           {/* Address Line */}
