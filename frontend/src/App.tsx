@@ -17,7 +17,7 @@ const App: React.FC = () => {
   return (
     <div className={styles.container}>
       <NavBar />
-      <Header />
+      <Header mainpage={loggedIn} />
       <Routes>
         {loggedIn ? (
           <>

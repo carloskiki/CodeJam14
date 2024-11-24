@@ -77,7 +77,6 @@ const Frontpage: React.FC = () => {
             <CardContent>
               <form onSubmit={handleLogin} className="space-y-4">
                 <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-medium">Email</label>
                   <Input
                     id="email"
                     type="text"

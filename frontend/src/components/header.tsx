@@ -2,7 +2,7 @@ import React from "react";
 import { Search, LogIn } from "lucide-react";
 import styles from "./header.module.css";
 
-const Header: React.FC = () => {
+const Header: React.FC = ({ mainpage }: { mainpage?: boolean }) => {
   return (
       <header className={styles.header}>
         <div className={styles.headerContent}>
@@ -11,19 +11,33 @@ const Header: React.FC = () => {
             alt="McGill Logo"
             className={styles.logo}
           />
-          <h1 className={styles.title}>Apartments</h1>
-          <div className={styles.searchContainer}>
-            <input
-              type="text"
-              placeholder="Search apartments..."
-              className={styles.searchInput}
-            />
-            <Search className={styles.searchIcon} size={20} />
-          </div>
-          <button className={styles.loginButton}>
-            <LogIn size={20} />
-            <span>Profile</span>
-          </button>
+
+          {
+              mainpage ? (
+                  <>
+                      <div>
+                          <h1 className={styles.title}>Apartments</h1>
+                      </div>
+                      <div className={styles.searchContainer}>
+                        <input
+                          type="text"
+                          placeholder="Search apartments..."
+                          className={styles.searchInput}
+                        />
+                        <Search className={styles.searchIcon} size={20} />
+                      </div>
+                      <button className={styles.loginButton}>
+                        <LogIn size={20} />
+                        <span>Profile</span>
+                      </button>
+                </>
+              ) : (
+                <div>
+                  <h1 className={styles.title}>Martlet's Nest</h1>
+                </div>
+              )
+          }
+          
         </div>
       </header>
   )
