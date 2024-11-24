@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { ref as dbRef, push, set, get } from 'firebase/database'
 import { storage, db } from '../firebase'
@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
+import { ChevronLeft, ChevronRight, Home, BedDouble, Bath, Calendar, Clock } from 'lucide-react';
 
 const Uploadpage: React.FC = () => {
   const navigate = useNavigate()
@@ -39,7 +40,6 @@ const Uploadpage: React.FC = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const fileArray = Array.from(e.target.files);
-      // Limit to first 10 images if more are selected
       setImages(fileArray.slice(0, 10));
     }
   }
@@ -63,20 +63,16 @@ const Uploadpage: React.FC = () => {
     try {
       const newIndex = latestIndex + 1;
 
-      // Upload all images first (including thumbnail)
       const imageUploadPromises = images.map((image, index) => 
         uploadImage(image, `${newIndex}/images/${index}.webp`)
       );
 
-      // Wait for all images to upload and get their URLs
       const imageUrls = await Promise.all(imageUploadPromises);
 
-      // Set the first image as thumbnail if no specific thumbnail was chosen
       const thumbnailUrl = thumbnail 
         ? await uploadImage(thumbnail, `${newIndex}/thumbnail/${thumbnail.name}`)
         : imageUrls[0];
 
-      // Create listing object
       const listing = {
         title,
         description,
@@ -90,11 +86,9 @@ const Uploadpage: React.FC = () => {
         createdAt: Date.now(),
       }
 
-      // Save to Firebase Realtime Database
       const newListingRef = dbRef(db, `Listings/${newIndex}`)
       await set(newListingRef, listing)
 
-      // Redirect to home page or listing page
       navigate('/')
     } catch (error) {
       console.error('Error uploading listing:', error)
@@ -107,9 +101,17 @@ const Uploadpage: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-8 max-w-3xl">
       <Card className="p-6">
-        <h1 className="text-2xl font-bold mb-6 text-center">List Your Property</h1>
+        <div className="relative mb-6">
+        <Link
+          to="/"
+          className="absolute left-0 top-1/2 -translate-y-1/2 inline-flex items-center gap-2 px-4 py-2 text-black font-bold border border-black rounded-md hover:bg-gray-100 transition-colors duration-200"
+          >
+          <Home size={20} className="text-black" />
+          {<span className="text-[13px]">Back to Listings</span>}
+        </Link>
+          <h1 className="text-2xl font-bold text-center">List Your Property</h1>
+        </div>
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Basic Information */}
           <div className="space-y-4">
             <h2 className="text-xl font-semibold text-gray-700">Basic Information</h2>
             <div>
@@ -136,7 +138,6 @@ const Uploadpage: React.FC = () => {
             </div>
           </div>
 
-          {/* Property Details */}
           <div className="space-y-4">
             <h2 className="text-xl font-semibold text-gray-700">Property Details</h2>
             <div className="grid grid-cols-3 gap-4">
@@ -179,7 +180,6 @@ const Uploadpage: React.FC = () => {
             </div>
           </div>
 
-          {/* Lease Details */}
           <div className="space-y-4">
             <h2 className="text-xl font-semibold text-gray-700">Lease Details</h2>
             <div className="grid grid-cols-2 gap-4">
@@ -210,7 +210,6 @@ const Uploadpage: React.FC = () => {
             </div>
           </div>
 
-          {/* Images */}
           <div className="space-y-4">
             <h2 className="text-xl font-semibold text-gray-700">Property Images</h2>
             <div className="space-y-4">
@@ -258,3 +257,4 @@ const Uploadpage: React.FC = () => {
 }
 
 export default Uploadpage
+
