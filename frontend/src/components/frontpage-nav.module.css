@@ -1,0 +1,38 @@
+.header {
+  background-color: #e83030;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 40px 20px 88px;
+  height: 120px;
+  margin: 0;
+}
+
+ .headerContent {
+position: relative;
+max-width: 2200px;
+margin: 0 auto;
+padding: 0 30px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+
+.logo {
+  position: relative;
+  top: -40px;
+  left: -50px;
+  width: 120px;
+  height: 120px;
+  margin: 0;
+  border-radius: 8px; /* Rounded corners, adjust as needed */
+  object-fit: cover; /* Ensures the image covers the area without stretching */
+}
+
+.appName {
+  font-size: 64px;
+  font-weight: bold;
+  position: absolute;
+  left: 500px;
+  top: 0px;
+  color: white;
+}
+

@@ -1,9 +1,7 @@
 import React from "react";
-import styles from "../components/ApartmentFinder.module.css";
-import { Link } from "react-router-dom";
+import styles from "../components/frontpage-nav.module.css";
 
 const navfront: React.FC = () => {
- 
    return (
        <header className={styles.header}>
          <div className={styles.headerContent}>

@@ -102,12 +102,12 @@
 
 /* Search */
 .searchContainer input{
-  position: absolute;
-  right: 400px;
-  top: 9px;
+  /* right: 400px; */
+  /* top: 9px; */
   display: flex;
   align-items: center;
-  width: 600px;
+  width: 400px;
+  margin-left: 200px;
 }
 
 .searchInput {
@@ -119,9 +119,10 @@
 }
 
 .searchIcon {
-  position: absolute;
-  right: 967px;
-  top: 18px;
+  position: relative;
+  top: -31px;
+  left: -80px;
+  
   color: #3b82f6;
 }
 
