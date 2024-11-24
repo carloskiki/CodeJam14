@@ -67,7 +67,7 @@ const mainpage: React.FC = () => {
               className={styles.logo}
             />
           </Link>
-          <h1 className={styles.title}>Apartments</h1>
+          <h1 className={styles.title}>partments</h1>
           <div className={styles.searchContainer}>
             <input
               type="text"
@@ -76,6 +76,13 @@ const mainpage: React.FC = () => {
             />
             <Search className={styles.searchIcon} size={20} />
           </div>
+
+          <Link to="/upload" className={styles.profileLink}>
+            <button className={styles.uploadButton}>
+              <span>Post Listing</span>
+            </button>
+          </Link>
+
           <Link to="/profile" className={styles.profileLink}>
             <RiAccountCircleFill
               className={styles.profileIconButton}
@@ -125,12 +132,12 @@ const mainpage: React.FC = () => {
           {/* Map Section */}
           <div className={styles.map}>
             <GoogleMap
-              mapContainerStyle={{ width: '100%', height: '400px' }}
-                /* TODO: Make this be the places in the mainpage */
+              mapContainerStyle={{ width: "100%", height: "400px" }}
+              /* TODO: Make this be the places in the mainpage */
               center={{ lat: 45.504, lng: -73.577 }}
               zoom={15}
             >
-            {/* TODO: Make this be the places in the mainpage */}
+              {/* TODO: Make this be the places in the mainpage */}
               <Marker position={{ lat: 45.504, lng: -73.577 }} />
             </GoogleMap>
           </div>

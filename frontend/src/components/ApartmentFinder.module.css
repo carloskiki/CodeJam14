@@ -25,7 +25,7 @@
 .header {
   background-color: #e83030;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 40px 20px;
+  padding: 40px 20px 88px;
   height: 120px;
   margin: 0;
 }
@@ -43,7 +43,7 @@
 .headerContent {
   position: relative;
   margin: 0;
-  padding: 0 30px;
+  padding: 0 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -95,19 +95,19 @@
   font-size: 64px;
   font-weight: bold;
   position: absolute;
-  left: 150px;
-  top: 0px;
+  left: 90px;
+  top: 7px;
   color: white;
 }
 
 /* Search */
 .searchContainer input{
   position: absolute;
-  right: -10px;
-  top: 30px;
+  right: 510px;
+  top: 9px;
   display: flex;
   align-items: center;
-  width: 400px;
+  width: 475px;
 }
 
 .searchInput {
@@ -120,15 +120,16 @@
 
 .searchIcon {
   position: absolute;
-  right: 360px;
-  top: 40px;
+  right: 953px;
+  top: 15px;
   color: #3b82f6;
 }
 
 /* Buttons */
 .logoutButton {
+  font-weight: bold;
   position: absolute;
-  top: -33px;
+  top: -30px;
   right: -10px;
   height: 40px;
   display: flex;
@@ -327,4 +328,27 @@
 .cardAddress {
   font-size: 0.9rem; /* Slightly smaller than the title */
   color: #6b7280; /* Gray color for a subtle look */
+}
+
+.uploadButton {
+  position: absolute;
+  font-weight: bold;
+  top: 0px;
+  right: 360px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  background-color: lightgrey;
+  color: black;
+  padding: 0.3rem 0.7rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.uploadButton:hover {
+  background-color: grey;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }
