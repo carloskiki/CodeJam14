@@ -113,7 +113,7 @@ const MainPage: React.FC = () => {
     [searchTerm]
   );
 
-  // Filter apartments based on the search term (client-side)
+  // Filter apartments based on the search term
   const filteredApartments = apartments.filter((apartment) => {
     if (!searchTerm.trim()) return true; // If search term is blank, show all apartments
     return (

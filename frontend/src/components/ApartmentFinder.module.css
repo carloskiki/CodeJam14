@@ -103,7 +103,7 @@
 /* Search */
 .searchContainer input{
   position: absolute;
-  right: 600px;
+  right: 400px;
   top: 9px;
   display: flex;
   align-items: center;
@@ -120,7 +120,7 @@
 
 .searchIcon {
   position: absolute;
-  right: 1167px;
+  right: 967px;
   top: 18px;
   color: #3b82f6;
 }
