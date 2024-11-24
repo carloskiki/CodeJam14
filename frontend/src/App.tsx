@@ -10,6 +10,9 @@ import Header from "./components/header";
 import { useState } from "react";
 import Uploadpage from "./pages/uploadpage";
 import styles from "./components/ApartmentFinder.module.css";
+import { LoadScript, Libraries } from "@react-google-maps/api";
+
+const mapsLibraries: Libraries = ["places"];
 
 const App: React.FC = () => {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -17,6 +20,11 @@ const App: React.FC = () => {
   return (
     <div className={styles.container}>
       <NavBar />
+      <LoadScript
+        googleMapsApiKey="AIzaSyDcwqtIoz_pE2Ylu2cxAv00XKzVqKonZSo"
+        libraries={mapsLibraries}
+      >
+      
       <Routes>
         {loggedIn ? (
           <>
@@ -37,6 +45,7 @@ const App: React.FC = () => {
         )}
         <Route path="/finishSignUp" element={<FinishSignup setLoggedIn={setLoggedIn} />} />
       </Routes>
+      </LoadScript>
     </div>
   );
 };
