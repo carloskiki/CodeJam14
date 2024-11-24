@@ -28,7 +28,9 @@ html, body {
   width: 100%; /* Ensure the full width is covered */
   height: 100%; /* Ensure the full height is covered */
   overflow-x: hidden; /* Prevent horizontal scrolling from accidental overflow */
+  box-sizing: border-box;
 }
+
 
 body {
   width: 100%;

@@ -2,17 +2,24 @@
 .container {
   min-height: 100vh;
   width: 100%;
-  max-width: none;
+  /* max-width: none; */
   margin: 0;
   padding: 0;
   background-color: #f3f4f6;
 }
 
-.main {
+/* .main {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1rem;
+} */
+
+.main {
+  width: 100%;
+  margin: 0;
+  padding: 2rem 1rem;
 }
+
 
 /* Header */
 .header {
@@ -23,7 +30,7 @@
   margin: 0;
 }
 
-.headerContent {
+/* .headerContent {
   position: relative;
   max-width: 2200px;
   margin: 0 auto;
@@ -31,7 +38,24 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+} */
+
+.headerContent {
+  position: relative;
+  margin: 0;
+  padding: 0 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
+
+.gridContainer {
+  grid-template-columns: repeat(2, 1fr); /* Equal spacing for both sections */
+  width: 100%; /* Ensure it spans full width */
+}
+
+
 
 .logoContainer {
   display: flex;
@@ -78,9 +102,9 @@
 
 /* Search */
 .searchContainer input{
-  position: relative;
-  right: -280px;
-  top: 0px;
+  position: absolute;
+  right: -10px;
+  top: 30px;
   display: flex;
   align-items: center;
   width: 400px;
@@ -95,9 +119,9 @@
 }
 
 .searchIcon {
-  position: relative;
-  right: -290px;
-  top: -30px;
+  position: absolute;
+  right: 360px;
+  top: 40px;
   color: #3b82f6;
 }
 
