@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { ref as dbRef, set, get } from 'firebase/database'
 import { storage, db } from '../firebase'
@@ -9,6 +9,15 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
 import { Autocomplete } from '@react-google-maps/api';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Home,
+  BedDouble,
+  Bath,
+  Calendar,
+  Clock,
+} from "lucide-react";
 
 const Uploadpage: React.FC = () => {
     const navigate = useNavigate()
@@ -130,6 +139,16 @@ const Uploadpage: React.FC = () => {
     return (
         <div className="container mx-auto px-4 py-8 max-w-3xl">
             <Card className="p-6">
+                {/* Back to Listings Button */}
+                <Link
+                  to="/"
+                  className="absolute left-30 text-black font-bold hover:text-darkgray-200 flex items-center gap-2 px-4 py-2 border border-black rounded-md hover:bg-gray-100 transition-colors duration-200"
+                  >
+                  <Home size={20} className="text-black" />
+                  <span className="text-xs">Back to Listings</span>
+                </Link>
+
+                {/* Page Title */}
                 <h1 className="text-2xl font-bold mb-6 text-center">List Your Property</h1>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Basic Information */}
