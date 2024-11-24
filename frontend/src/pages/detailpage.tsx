@@ -6,6 +6,7 @@ import { db } from "../firebase";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ChevronLeft, ChevronRight, Home, BedDouble, Bath, Calendar, Clock } from "lucide-react";
+import { PopupButton } from "react-calendly";
 
 interface ApartmentDetails {
   id: number;
@@ -144,11 +145,24 @@ const DetailPage: React.FC = () => {
           </Card>
         </div>
 
-        {/* Contact Button */}
+        {/* Schedule Button */}
         <div className="text-center">
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2 rounded-lg text-lg">
-            Schedule a visit
-          </Button>
+          <PopupButton
+            url="https://calendly.com/moodcatcher103/apartment-visit"
+            rootElement={document.getElementById("root")!}
+            text="Schedule a visit"
+            styles={{
+              color: '#ffffff',
+              backgroundColor: '#2563eb',
+              padding: '0.5rem 2rem',
+              fontSize: '1.125rem',
+              lineHeight: '1.75rem',
+              borderRadius: '0.5rem',
+              cursor: 'pointer',
+              fontWeight: '500',
+              transition: 'background-color 0.2s'
+            }}
+          />
         </div>
       </Card>
     </div>
