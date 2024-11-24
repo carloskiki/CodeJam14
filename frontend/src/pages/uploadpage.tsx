@@ -1,15 +1,5 @@
-import { useState, useEffect, useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage'
-import { ref as dbRef, set, get } from 'firebase/database'
-import { storage, db } from '../firebase'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
-import { Card } from "@/components/ui/card"
-import { useUser } from '../context/UserContext';
-import { Autocomplete } from '@react-google-maps/api';
+import { useState, useEffect, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   ref as storageRef,
   uploadBytes,
@@ -22,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
+import { useUser } from "../context/UserContext";
 import { Autocomplete } from "@react-google-maps/api";
 import {
   ChevronLeft,
@@ -34,21 +25,21 @@ import {
 } from "lucide-react";
 
 const Uploadpage: React.FC = () => {
-const navigate = useNavigate()
-const { email } = useUser();
-const [title, setTitle] = useState('')
-const [description, setDescription] = useState('')
-const [price, setPrice] = useState('')
-const [bedrooms, setBedrooms] = useState('')
-const [bathrooms, setBathrooms] = useState('')
-const [leaseStart, setLeaseStart] = useState('')
-const [contractDuration, setContractDuration] = useState('')
-const [images, setImages] = useState<File[]>([])
-const [thumbnail, setThumbnail] = useState<File | null>(null)
-const [isUploading, setIsUploading] = useState(false)
-const [latestIndex, setLatestIndex] = useState<number>(0)
-const [address, setAddress] = useState('')
-const [plusCode, setPlusCode] = useState('')
+  const navigate = useNavigate();
+  const { email } = useUser();
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [bedrooms, setBedrooms] = useState("");
+  const [bathrooms, setBathrooms] = useState("");
+  const [leaseStart, setLeaseStart] = useState("");
+  const [contractDuration, setContractDuration] = useState("");
+  const [images, setImages] = useState<File[]>([]);
+  const [thumbnail, setThumbnail] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [latestIndex, setLatestIndex] = useState<number>(0);
+  const [address, setAddress] = useState("");
+  const [plusCode, setPlusCode] = useState("");
 
   // Use ref to store the autocomplete instance
   const autocompleteRef = useRef(null);
@@ -109,28 +100,28 @@ const [plusCode, setPlusCode] = useState('')
           )
         : imageUrls[0];
 
-            // Create listing object
-            const listing = {
-                title,
-                address,
-                plusCode,
-                description,
-                price: parseFloat(price),
-                bedrooms: parseInt(bedrooms),
-                bathrooms: parseInt(bathrooms),
-                leaseStart,
-                contractDuration: parseInt(contractDuration),
-                imageUrl: thumbnailUrl,
-                imageUrls,
-                createdAt: Date.now(),
-                poster: {
-                  email: email
-                }
-            }
+      // Create listing object
+      const listing = {
+        title,
+        address,
+        plusCode,
+        description,
+        price: parseFloat(price),
+        bedrooms: parseInt(bedrooms),
+        bathrooms: parseInt(bathrooms),
+        leaseStart,
+        contractDuration: parseInt(contractDuration),
+        imageUrl: thumbnailUrl,
+        imageUrls,
+        createdAt: Date.now(),
+        poster: {
+          email: email,
+        },
+      };
 
-            // Save to Firebase Realtime Database
-            const newListingRef = dbRef(db, `Listings/${newIndex}`);
-            await set(newListingRef, listing);
+      // Save to Firebase Realtime Database
+      const newListingRef = dbRef(db, `Listings/${newIndex}`);
+      await set(newListingRef, listing);
 
       // Redirect to home page or listing page
       navigate("/");
