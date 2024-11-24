@@ -85,6 +85,7 @@ const ProfilePage: React.FC = () => {
       alert('Error updating profile. Please try again.');
     } finally {
       setIsLoading(false);
+      navigate('/');  // Navigate to the main page
     }
   };
 
@@ -139,7 +140,6 @@ const ProfilePage: React.FC = () => {
               onChange={(e) => setPhoneNumber(e.target.value)}
               className="mt-1"
               placeholder="Enter your phone number"
-              required
             />
           </div>
 
