@@ -314,7 +314,7 @@ const DetailPage: React.FC = () => {
         {/* Schedule Button */}
         <div className="text-center mt-6">
           <PopupButton
-            url="https://calendly.com/moodcatcher103/apartment-visit"
+            url="https://calendly.com/jwcairo0502/apartment-visit"
             rootElement={document.getElementById("root")!}
             text="Schedule a visit"
             styles={{
