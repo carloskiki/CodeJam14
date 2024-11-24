@@ -15,8 +15,8 @@ interface Apartment {
   bathrooms: number;
   imageUrl: string;
   address: string;
-  lat: number;
-  lng: number;
+  latitude: number;
+  longitude: number;
 }
 
 const MainPage: React.FC = () => {
@@ -29,6 +29,8 @@ const MainPage: React.FC = () => {
   const [firstKey, setFirstKey] = useState<string | null>(null); // First key for previous page
   const [hasNextPage, setHasNextPage] = useState(true); // Are there more pages ahead?
   const [hasPrevPage, setHasPrevPage] = useState(false); // Are there previous pages?
+  const [hoverPosition, setHoverPosition] = useState({ lat: 45.504, lng: -73.577 });
+  const [zoom, setZoom] = useState(18);
 
   const POSTS_PER_PAGE = 6; // Number of items per page
 
@@ -113,6 +115,8 @@ const MainPage: React.FC = () => {
     [searchTerm]
   );
 
+  console.log(apartments);
+
   // Filter apartments based on the search term
   const filteredApartments = apartments.filter((apartment) => {
     if (!searchTerm.trim()) return true; // If search term is blank, show all apartments
@@ -172,7 +176,12 @@ const MainPage: React.FC = () => {
         <div className={styles.gridContainer}>
           <div className={styles.apartmentGrid}>
             {filteredApartments.map((apartment) => (
-              <div key={apartment.id} className={styles.card}>
+              <div key={apartment.id} className={styles.card}
+              onMouseEnter={() => {
+                 setHoverPosition({ lat: apartment.latitude, lng: apartment.longitude });
+                 setZoom(18);
+              } }
+              >
                 <Link to={`/detail/${apartment.id}`}>
                   <img
                     src={apartment.imageUrl}
@@ -202,14 +211,14 @@ const MainPage: React.FC = () => {
           <div className={styles.map}>
             <GoogleMap
               mapContainerStyle={{ width: "100%", height: "400px" }}
-              center={{ lat: 45.504, lng: -73.577 }}
-              zoom={15}
+              center={hoverPosition}
+              zoom={zoom}
             >
               {filteredApartments.map((apartment) => (
                 <Marker
                   key={apartment.id}
-                  position={{ lat: apartment.lat, lng: apartment.lng }}
-                  title={apartment.title}
+                  position={{ lat: -73.577, lng: 45.504 }}
+                  title=""
                 />
               ))}
             </GoogleMap>

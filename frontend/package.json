@@ -14,6 +14,7 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@react-google-maps/api": "^2.20.3",
     "@types/react-router-dom": "^5.3.3",
+    "@vis.gl/react-google-maps": "^1.4.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "firebase": "^11.0.2",
