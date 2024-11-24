@@ -5,24 +5,19 @@ import Detailpage from "./pages/detailpage";
 import Profile from "./pages/profile";
 import Mainpage from "./pages/mainpage";
 import NavBar from "./components/Nav";
-import Login from './pages/login';
-import Signup from './pages/signup';
 import FinishSignup from "./pages/finish-signup";
+import Header from "./components/header";
 import { useState } from "react";
 import Uploadpage from "./pages/uploadpage";
+import styles from "./components/ApartmentFinder.module.css";
 
 const App: React.FC = () => {
   const [loggedIn, setLoggedIn] = useState(true);
-  const navigate = useNavigate();
-
-  // Implement the navigation function
-  const handleNavigate = (view: "login" | "signup") => {
-    navigate(`/${view}`);
-  };
 
   return (
-    <div>
+    <div className={styles.container}>
       <NavBar />
+      <Header />
       <Routes>
         {loggedIn ? (
           <>
@@ -32,14 +27,13 @@ const App: React.FC = () => {
             <Route path="/upload" element={<Uploadpage />} />
             <Route 
               path="/frontpage" 
-              element={<Frontpage navigateTo={handleNavigate} />} 
+              element={<Frontpage />} 
             />
-            <Route path="/login" element={<Login />} />
           </>
         ) : (
           <Route 
             path="/" 
-            element={<Frontpage navigateTo={handleNavigate} />} 
+            element={<Frontpage />} 
           />
         )}
         <Route path="/finishSignUp" element={<FinishSignup setLoggedIn={setLoggedIn} />} />
