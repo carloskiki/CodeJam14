@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Search, LogOut } from "lucide-react";
+import React, { useState, useEffect, useCallback } from "react";
+import { Search, LogOut } from 'lucide-react';
 import styles from "../components/ApartmentFinder.module.css";
-import { get, query, ref, orderByKey, limitToFirst, limitToLast, startAfter, endBefore } from "firebase/database";
+import { get, query, ref, orderByKey, limitToFirst } from "firebase/database";
 import { db } from "@/firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { RiAccountCircleFill } from "react-icons/ri";
@@ -15,100 +15,72 @@ interface Apartment {
   bathrooms: number;
   imageUrl: string;
   address: string;
+  lat: number;
+  lng: number;
 }
 
 const MainPage: React.FC = () => {
   const [apartments, setApartments] = useState<Apartment[]>([]);
   const [loading, setLoading] = useState(true);
-  const [lastKey, setLastKey] = useState<string | null>(null); // Last key for next page
-  const [firstKey, setFirstKey] = useState<string | null>(null); // First key for previous page
-  const [hasNextPage, setHasNextPage] = useState(true); // Are there more pages ahead?
-  const [hasPrevPage, setHasPrevPage] = useState(false); // Are there previous pages?
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   const POSTS_PER_PAGE = 6; // Number of items per page
 
   const handleLogout = () => {
-    navigate("/frontpage"); // Navigate to the frontpage
+    navigate("/frontpage");
   };
 
-  // **Fetch Apartments**
-  const fetchApartments = async (action: "next" | "prev") => {
+  const fetchApartments = useCallback(async (search: string = "") => {
     setLoading(true);
-  
     try {
       const apartmentsRef = ref(db, "Listings/");
-      let apartmentsQuery;
-  
-      if (action === "next" && lastKey) {
-        apartmentsQuery = query(
-          apartmentsRef,
-          orderByKey(),
-          startAfter(lastKey),
-          limitToFirst(POSTS_PER_PAGE)
-        );
-      } else if (action === "prev" && firstKey) {
-        apartmentsQuery = query(
-          apartmentsRef,
-          orderByKey(),
-          endBefore(firstKey),
-          limitToLast(POSTS_PER_PAGE)
-        );
-      } else {
-        // First page
-        apartmentsQuery = query(
-          apartmentsRef,
-          orderByKey(),
-          limitToFirst(POSTS_PER_PAGE)
-        );
-      }
-  
+      const apartmentsQuery = query(
+        apartmentsRef,
+        orderByKey(),
+        limitToFirst(100) // Fetch more apartments for client-side filtering
+      );
+
       const snapshot = await get(apartmentsQuery);
-  
+
       if (snapshot.exists()) {
         const data = snapshot.val();
-        const fetchedApartments = Object.entries(data).map(([id, value]) => ({
+        let fetchedApartments = Object.entries(data).map(([id, value]) => ({
           id,
           ...(value as Apartment),
         }));
-  
-        setApartments(fetchedApartments);
-  
-        if (fetchedApartments.length > 0) {
-          const newFirstKey = fetchedApartments[0].id; // First item of the new page
-          const newLastKey = fetchedApartments[fetchedApartments.length - 1].id; // Last item of the new page
-  
-          setFirstKey(newFirstKey);
-          setLastKey(newLastKey);
-  
-          // Set `hasNextPage` if we have enough items to fill the page
-          setHasNextPage(fetchedApartments.length === POSTS_PER_PAGE);
-  
-          // Determine `hasPrevPage`
-          if (action === "prev" && newFirstKey === fetchedApartments[0].id && !firstKey) {
-            // Back to the first page
-            setHasPrevPage(newFirstKey !== fetchedApartments[0].id);
-          } else {
-            setHasPrevPage(action === "prev" || (action === "next" && firstKey !== null));
-          }
+
+        if (search) {
+          const searchWords = search.toLowerCase().split(' ');
+          fetchedApartments = fetchedApartments.filter(apartment => 
+            searchWords.some(word => apartment.title.toLowerCase().includes(word))
+          );
         }
+
+        setApartments(fetchedApartments.slice(0, POSTS_PER_PAGE));
       } else {
         setApartments([]);
-        setHasNextPage(false);
-        setHasPrevPage(false);
       }
     } catch (error) {
       console.error("Error fetching apartments:", error);
     } finally {
       setLoading(false);
     }
-  };
-
-  // Load the initial page
-  useEffect(() => {
-    fetchApartments("next");
-    setHasPrevPage(false);
   }, []);
+
+  const handleSearchChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+  }, []);
+
+  const handleSearchSubmit = useCallback((event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    fetchApartments(searchTerm);
+  }, [searchTerm, fetchApartments]);
+
+  useEffect(() => {
+    fetchApartments();
+  }, [fetchApartments]);
 
   if (loading && apartments.length === 0) {
     return <div>Loading...</div>;
@@ -122,14 +94,18 @@ const MainPage: React.FC = () => {
             <img src="/images/McGill.png" alt="McGill Logo" className={styles.logo} />
           </Link>
           <h1 className={styles.title}>partments</h1>
-          <div className={styles.searchContainer}>
+          <form onSubmit={handleSearchSubmit} className={styles.searchContainer}>
             <input
               type="text"
               placeholder="Search apartments..."
               className={styles.searchInput}
+              value={searchTerm}
+              onChange={handleSearchChange}
             />
-            <Search className={styles.searchIcon} size={20} />
-          </div>
+            <button type="submit" className={styles.searchButton}>
+              <Search className={styles.searchIcon} size={20} />
+            </button>
+          </form>
 
           <Link to="/upload" className={styles.profileLink}>
             <button className={styles.uploadButton}>
@@ -178,41 +154,26 @@ const MainPage: React.FC = () => {
             ))}
           </div>
 
-          {/* Map Section */}
           <div className={styles.map}>
             <GoogleMap
               mapContainerStyle={{ width: "100%", height: "400px" }}
-              /* TODO: Make this be the places in the mainpage */
               center={{ lat: 45.504, lng: -73.577 }}
               zoom={15}
             >
-              {/* TODO: Make this be the places in the mainpage */}
-              <Marker position={{ lat: 45.504, lng: -73.577 }} />
+              {apartments.map((apartment) => (
+                <Marker 
+                  key={apartment.id} 
+                  position={{ lat: apartment.lat, lng: apartment.lng }} 
+                  title={apartment.title}
+                />
+              ))}
             </GoogleMap>
           </div>
-
-          {/* Pagination Controls */}
-          <div className={styles.pagination}>
-            <button
-              className={styles.pagePrevButton}
-              onClick={() => fetchApartments("prev")}
-              disabled={!hasPrevPage}
-            >
-              Previous
-            </button>
-            <button
-              className={styles.pageNextButton}
-              onClick={() => fetchApartments("next")}
-              disabled={!hasNextPage}
-            >
-              Next
-            </button>
-          </div>
-
         </div>
       </main>
-      </div>
+    </div>
   );
 };
 
 export default MainPage;
+
