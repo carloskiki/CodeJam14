@@ -31,6 +31,7 @@ interface ApartmentDetails {
     name: string; //name of user
     profilePhoto: string; //pfp for user
   };
+  location: string;
 }
 
 const DetailPage: React.FC = () => {
@@ -98,7 +99,12 @@ const DetailPage: React.FC = () => {
         {/* Title and Price */}
         <div className="mb-4 mt-3 text-left pl-2">
           <h1 className="text-5xl font-bold">{apartment.title}</h1>
-          <p className="text-2xl font-semibold text-gray-500 mt-1">
+          <p className="text-2xl font-semibold text-gray-500 ">
+            123 Placeholder Street, City, Country
+          </p>{" "}
+          {/*need to link this to .location field!!!!!!}*/}
+          {/* Address Line */}
+          <p className="text-2xl font-semibold text-gray-500">
             ${apartment.price}/month
           </p>
         </div>
