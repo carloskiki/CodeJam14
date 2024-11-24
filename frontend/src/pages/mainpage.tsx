@@ -15,6 +15,7 @@ interface Apartment {
   bedrooms: number;
   bathrooms: number;
   imageUrl: string;
+  address: string;
 }
 
 interface ApartmentData {
@@ -103,10 +104,7 @@ const mainpage: React.FC = () => {
                 </Link>
                 <div className={styles.cardContent}>
                   <h2 className={styles.cardTitle}>{apartment.title}</h2>
-                  <p className={styles.cardAddress}>
-                    123 Placeholder Street, City, Country
-                  </p>
-                  {/*Address Line to be Updated*/}
+                  <p className={styles.cardAddress}>{apartment.address}</p>
 
                   <p className={styles.cardPrice}>{apartment.price}</p>
                   <div className={styles.cardDetails}>

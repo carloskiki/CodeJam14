@@ -21,21 +21,21 @@ import {
 } from "lucide-react";
 
 const Uploadpage: React.FC = () => {
-  const navigate = useNavigate()
-  const { email } = useUser();
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const [price, setPrice] = useState('')
-  const [bedrooms, setBedrooms] = useState('')
-  const [bathrooms, setBathrooms] = useState('')
-  const [leaseStart, setLeaseStart] = useState('')
-  const [contractDuration, setContractDuration] = useState('')
-  const [images, setImages] = useState<File[]>([])
-  const [thumbnail, setThumbnail] = useState<File | null>(null)
-  const [isUploading, setIsUploading] = useState(false)
-  const [latestIndex, setLatestIndex] = useState<number>(0)
-  const [address, setAddress] = useState('')
-  const [plusCode, setPlusCode] = useState('')
+const navigate = useNavigate()
+const { email } = useUser();
+const [title, setTitle] = useState('')
+const [description, setDescription] = useState('')
+const [price, setPrice] = useState('')
+const [bedrooms, setBedrooms] = useState('')
+const [bathrooms, setBathrooms] = useState('')
+const [leaseStart, setLeaseStart] = useState('')
+const [contractDuration, setContractDuration] = useState('')
+const [images, setImages] = useState<File[]>([])
+const [thumbnail, setThumbnail] = useState<File | null>(null)
+const [isUploading, setIsUploading] = useState(false)
+const [latestIndex, setLatestIndex] = useState<number>(0)
+const [address, setAddress] = useState('')
+const [plusCode, setPlusCode] = useState('')
 
     // Use ref to store the autocomplete instance
     const autocompleteRef = useRef(null);
