@@ -8,12 +8,13 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
-import { Autocomplete  } from '@react-google-maps/api';
+import { Autocomplete } from '@react-google-maps/api';
 
 const Uploadpage: React.FC = () => {
     const navigate = useNavigate()
     const [address, setAddress] = useState('')
-    const [plusCode, setPlusCode] = useState('')
+    const [latitude, setLatitude] = useState(0);
+    const [longitude, setLongitude] = useState(0);
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [price, setPrice] = useState('')
@@ -86,7 +87,8 @@ const Uploadpage: React.FC = () => {
             const listing = {
                 title,
                 address,
-                plusCode,
+                latitude,
+                longitude,
                 description,
                 price: parseFloat(price),
                 bedrooms: parseInt(bedrooms),
@@ -116,13 +118,15 @@ const Uploadpage: React.FC = () => {
         const autocomplete = autocompleteRef.current;
         if (autocomplete) {
             const place = autocomplete!.getPlace();
-            const plusCode = place.plus_code?.global_code;
+            const lat = place.geometry?.location.lat();
+            const lng = place.geometry?.location.lng();
             
             if (place.formatted_address) {
                 setAddress(place.formatted_address);
             }
-            if (plusCode) {
-                setPlusCode(plusCode);
+            if (lat && lng) {
+                setLatitude(lat);
+                setLongitude(lng);
             }
         }
     };

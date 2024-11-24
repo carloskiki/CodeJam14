@@ -6,6 +6,7 @@ import { get, ref } from "firebase/database";
 import { db } from "@/firebase";
 import { RiAccountCircleFill } from "react-icons/ri";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import { GoogleMap, Marker } from "@react-google-maps/api";
 
 interface Apartment {
   id: number;
@@ -24,6 +25,8 @@ const mainpage: React.FC = () => {
    const [apartments, setApartments] = useState<ApartmentData | null>(null);
    const [loading, setLoading] = useState(true);
    const navigate = useNavigate();
+
+   const [hoverCoords, setHoverCoords] = useState({ lat: 45.506184, lng: -73.5786883 });
 
    const handleLogout = () => {
     // Perform any logout logic here (e.g., clearing user session)
@@ -89,7 +92,13 @@ const mainpage: React.FC = () => {
           {/* Apartments Grid */}
           <div className={styles.apartmentGrid}>
             {Object.entries(apartments!).map(([id, apartment]) => (
-              <div key={id} className={styles.card}>
+              <div key={id} className={styles.card}
+                onMouseEnter={() => {
+                    console.log('Mouse enter:', apartment);
+                    setHoverCoords({ lat: apartment.lat, lng: apartment.lng });
+                  }
+                }
+              >
                 <Link to={`/detail/${id}`}>
                   <img
                     src={apartment.imageUrl}
@@ -117,16 +126,13 @@ const mainpage: React.FC = () => {
 
           {/* Map Section */}
           <div className={styles.map}>
-            <iframe
-              width="400"
-              height="400"
-              style={{"border": 0}}
-              loading="lazy"
-              allowFullScreen
-              referrerPolicy="no-referrer-when-downgrade"
-              src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDcwqtIoz_pE2Ylu2cxAv00XKzVqKonZSo&q=Space+Needle,Seattle+WA"
-                  >
-            </iframe>
+            <GoogleMap
+              mapContainerStyle={{ width: '100%', height: '400px' }}
+              center={hoverCoords}
+              zoom={15}
+            >
+              <Marker position={hoverCoords} />
+            </GoogleMap>
           </div>
         </div>
       </main>
@@ -135,46 +141,3 @@ const mainpage: React.FC = () => {
 };
 
 export default mainpage;
-
-
-// 
-//   return (
-//     <div className={styles.container}>
-//       <header className={styles.header}>
-//         <div className={styles.headerContent}>
-//           <h1 className={styles.title}>McGill Apartment Finder</h1>
-//           <div className={styles.searchContainer}>
-//             <input
-//               type="text"
-//               placeholder="Search apartments..."
-//               className={styles.searchInput}
-//             />
-//             <Search className={styles.searchIcon} size={20} />
-//           </div>
-//           <button className={styles.loginButton}>
-//             <LogIn size={20} />
-//             <span>Login</span>
-//           </button>
-//         </div>
-//       </header>
-// 
-//       <main className={styles.main}>
-//         <div className={styles.grid}>
-//           {Object.entries(apartments!).map(([key, apartment]) => (
-//             <div key={key} className={styles.card}>
-//               <img src={apartment.imageUrl} alt={apartment.title} className={styles.cardImage} />
-//               <div className={styles.cardContent}>
-//                 <h2 className={styles.cardTitle}>{apartment.title}</h2>
-//                 <p className={styles.cardPrice}>{apartment.price}</p>
-//                 <div className={styles.cardDetails}>
-//                   <span>{apartment.bedrooms} {apartment.bedrooms === 1 ? 'Bedroom' : 'Bedrooms'}</span>
-//                   <span>{apartment.bathrooms} {apartment.bathrooms === 1 ? 'Bathroom' : 'Bathrooms'}</span>
-//                 </div>
-//               </div>
-//             </div>
-//           ))}
-//         </div>
-//       </main>
-//     </div>
-//   )
-// }
