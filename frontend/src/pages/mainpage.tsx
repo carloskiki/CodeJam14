@@ -25,20 +25,20 @@ const MainPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
-  const [lastKey, setLastKey] = useState<string | null>(null); // Last key for next page
-  const [firstKey, setFirstKey] = useState<string | null>(null); // First key for previous page
-  const [hasNextPage, setHasNextPage] = useState(true); // Are there more pages ahead?
-  const [hasPrevPage, setHasPrevPage] = useState(false); // Are there previous pages?
+  const [lastKey, setLastKey] = useState<string | null>(null);
+  const [firstKey, setFirstKey] = useState<string | null>(null);
+  const [hasNextPage, setHasNextPage] = useState(true);
+  const [hasPrevPage, setHasPrevPage] = useState(false);
   const [hoverPosition, setHoverPosition] = useState({ lat: 45.504, lng: -73.577 });
   const [zoom, setZoom] = useState(18);
 
-  const POSTS_PER_PAGE = 6; // Number of items per page
+  const POSTS_PER_PAGE = 6;
 
   const handleLogout = () => {
     navigate("/frontpage");
   };
 
-  // **Fetch Apartments with Pagination**
+  // Fetch apartments with pagination
   const fetchApartments = async (action: "next" | "prev" | "initial") => {
     setLoading(true);
 
@@ -61,7 +61,6 @@ const MainPage: React.FC = () => {
           limitToLast(POSTS_PER_PAGE)
         );
       } else {
-        // Initial page load (first page)
         apartmentsQuery = query(
           apartmentsRef,
           orderByKey(),
@@ -81,8 +80,8 @@ const MainPage: React.FC = () => {
         setApartments(fetchedApartments);
 
         if (fetchedApartments.length > 0) {
-          const newFirstKey = fetchedApartments[0].id; // First item of the new page
-          const newLastKey = fetchedApartments[fetchedApartments.length - 1].id; // Last item of the new page
+          const newFirstKey = fetchedApartments[0].id;
+          const newLastKey = fetchedApartments[fetchedApartments.length - 1].id;
 
           setFirstKey(newFirstKey);
           setLastKey(newLastKey);
@@ -102,29 +101,56 @@ const MainPage: React.FC = () => {
     }
   };
 
+  // Search apartments in the database
+  const searchApartments = async (term: string) => {
+    setLoading(true);
+
+    try {
+      const apartmentsRef = ref(db, "Listings/");
+      const snapshot = await get(apartmentsRef);
+
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        const fetchedApartments = Object.entries(data)
+          .map(([id, value]) => ({
+            id,
+            ...(value as Apartment),
+          }))
+          .filter(
+            (apartment) =>
+              apartment.title.toLowerCase().includes(term.toLowerCase()) ||
+              apartment.address.toLowerCase().includes(term.toLowerCase())
+          );
+
+        setApartments(fetchedApartments);
+        setHasNextPage(false); // Disable pagination for search results
+        setHasPrevPage(false);
+      } else {
+        setApartments([]);
+      }
+    } catch (error) {
+      console.error("Error searching apartments:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSearchChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setSearchTerm(value);
+    setSearchTerm(event.target.value);
   }, []);
 
   const handleSearchSubmit = useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      fetchApartments("initial");
+
+      if (searchTerm.trim() === "") {
+        fetchApartments("initial");
+      } else {
+        searchApartments(searchTerm);
+      }
     },
     [searchTerm]
   );
-
-  console.log(apartments);
-
-  // Filter apartments based on the search term
-  const filteredApartments = apartments.filter((apartment) => {
-    if (!searchTerm.trim()) return true; // If search term is blank, show all apartments
-    return (
-      apartment.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      apartment.address.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
 
   useEffect(() => {
     fetchApartments("initial");
@@ -175,12 +201,14 @@ const MainPage: React.FC = () => {
       <main className={styles.main}>
         <div className={styles.gridContainer}>
           <div className={styles.apartmentGrid}>
-            {filteredApartments.map((apartment) => (
-              <div key={apartment.id} className={styles.card}
-              onMouseEnter={() => {
-                 setHoverPosition({ lat: apartment.latitude, lng: apartment.longitude });
-                 setZoom(18);
-              } }
+            {apartments.map((apartment) => (
+              <div
+                key={apartment.id}
+                className={styles.card}
+                onMouseEnter={() => {
+                  setHoverPosition({ lat: apartment.latitude, lng: apartment.longitude });
+                  setZoom(18);
+                }}
               >
                 <Link to={`/detail/${apartment.id}`}>
                   <img
@@ -214,33 +242,35 @@ const MainPage: React.FC = () => {
               center={hoverPosition}
               zoom={zoom}
             >
-              {filteredApartments.map((apartment) => (
+              {apartments.map((apartment) => (
                 <Marker
                   key={apartment.id}
-                  position={{ lat: -73.577, lng: 45.504 }}
-                  title=""
+                  position={{ lat: apartment.latitude, lng: apartment.longitude }}
+                  title={apartment.title}
                 />
               ))}
             </GoogleMap>
           </div>
 
           {/* Pagination Controls */}
-          <div className={styles.pagination}>
-            <button
-              className={styles.pagePrevButton}
-              onClick={() => fetchApartments("prev")}
-              disabled={!hasPrevPage}
-            >
-              Previous
-            </button>
-            <button
-              className={styles.pageNextButton}
-              onClick={() => fetchApartments("next")}
-              disabled={!hasNextPage}
-            >
-              Next
-            </button>
-          </div>
+          {!searchTerm.trim() && (
+            <div className={styles.pagination}>
+              <button
+                className={styles.pagePrevButton}
+                onClick={() => fetchApartments("prev")}
+                disabled={!hasPrevPage}
+              >
+                Previous
+              </button>
+              <button
+                className={styles.pageNextButton}
+                onClick={() => fetchApartments("next")}
+                disabled={!hasNextPage}
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
       </main>
     </div>
